@@ -6,7 +6,7 @@ import {
 } from "react-router-dom";
 import Login from "./components/Login";
 import Home from "./pages/Home";
-import ProtectedRoute from "./components/ProtectedRoute.jsx";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
   return (
@@ -19,6 +19,18 @@ function App() {
           element={
             <ProtectedRoute>
               <Home />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/search"
+          element={<ProtectedRoute>{/* Componente de Busca */}</ProtectedRoute>}
+        />
+        <Route
+          path="/playlists"
+          element={
+            <ProtectedRoute>
+              {/* Componente de Minhas Músicas */}
             </ProtectedRoute>
           }
         />
