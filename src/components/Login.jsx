@@ -77,7 +77,7 @@ function Login() {
             <div className="mt-8 flex flex-col gap-y-4">
               <button
                 onClick={handleLogin}
-                className="active:scale-[.98] active:duration-75 hover:scale-[1.01] ease-in-out transition-all py-4 rounded-xl bg-gradient-to-tr from-blue-500 to-green-500 text-white text-lg font-bold"
+                className="active:scale-[.98] active:duration-75 hover:scale-[1.01] ease-in-out transition-all py-4 rounded-xl bg-gradient-to-r from-sky-500 to-green-500 text-white text-lg font-bold"
               >
                 Login
               </button>
@@ -86,11 +86,11 @@ function Login() {
         </div>
       </div>
       <div className="hidden relative lg:flex h-full w-1/2 items-center justify-center bg-gray-800">
-        <div className="w-60 h-60 bg-gradient-to-tr from-sky-500 to-green-500 rounded-full animate-spin"></div>
+        <div className="bg-circle w-60 h-60 bg-gradient-to-tr from-sky-500 to-green-500 rounded-full transition-transform duration-200 ease-out animate-spin"></div>
         <img
           src={spoticryIcon}
           alt="Spoticry Icon"
-          className="absolute w-20 h-20"
+          className="icon absolute w-20 h-20 drop-shadow-xl "
         />
       </div>
     </div>
