@@ -1,6 +1,6 @@
 import { useState } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { login } from "../services/authService";
 import spoticryIcon from "../assets/spoticry.svg";
 
 function Login() {
@@ -10,34 +10,13 @@ function Login() {
   const navigate = useNavigate();
 
   const handleLogin = async () => {
-    console.log("Início do handleLogin");
-    try {
-      console.log("Tentando fazer login com", { email, password });
-      const response = await axios.post(
-        "https://invincible-midnight-action.glitch.me/user/login",
-        {
-          email,
-          password,
-        }
-      );
-      console.log("Resposta da API:", response);
+    setError(null);
+    const result = await login(email, password);
 
-      if (response.data.token) {
-        const token = response.data.token;
-        console.log("Token recebido:", token);
-
-        localStorage.setItem("token", token);
-        console.log("Token salvo no localStorage");
-
-        navigate("/home");
-        console.log("Redirecionando para /home");
-      } else {
-        console.error("Token não recebido na resposta da API");
-        setError("Falha na autenticação. Token não recebido.");
-      }
-    } catch (err) {
-      console.error("Erro na autenticação:", err);
-      setError("Falha na autenticação. Verifique suas credenciais.");
+    if (result.success) {
+      navigate("/home");
+    } else {
+      setError(result.error);
     }
   };
 
