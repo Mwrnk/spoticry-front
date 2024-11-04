@@ -1,17 +1,49 @@
+// Home.jsx
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { fetchPlaylists } from "../services/api";
+import { fetchPlaylists, fetchSongs } from "../services/api";
+import SidebarPlaylists from "../components/SidebarPlaylists";
+import TrendingPlaylists from "../components/TrendingPlaylists";
+import SongsList from "../components/SongsList";
+import Header from "../components/Header";
 
 function Home() {
   const [playlists, setPlaylists] = useState([]);
+  const [songs, setSongs] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const loadPlaylists = async () => {
-      const playlists = await fetchPlaylists();
-      setPlaylists(playlists);
+    const loadData = async () => {
+      try {
+        setIsLoading(true);
+        setError(null);
+
+        const [playlistsData, songsData] = await Promise.all([
+          fetchPlaylists(),
+          fetchSongs(),
+        ]);
+
+        if (Array.isArray(playlistsData)) {
+          setPlaylists(playlistsData);
+        } else {
+          setError("Erro ao carregar playlists");
+        }
+
+        if (Array.isArray(songsData)) {
+          setSongs(songsData);
+        } else {
+          setError("Erro ao carregar músicas");
+        }
+      } catch (err) {
+        setError("Erro ao carregar dados. Por favor, tente novamente.");
+      } finally {
+        setIsLoading(false);
+      }
     };
-    loadPlaylists();
+
+    loadData();
   }, []);
 
   const handleLogout = () => {
@@ -19,51 +51,31 @@ function Home() {
     navigate("/login");
   };
 
-  return (
-    <div className="p-4">
-      <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold mb-4">Bem-vindo ao SpotiCry!</h1>
-        <button
-          onClick={handleLogout}
-          className="py-2 px-4 bg-red-500 text-white rounded-lg"
-        >
-          Logout
-        </button>
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="text-xl">Carregando...</div>
       </div>
-      <div className="mb-8">
-        <h2 className="text-2xl font-semibold mb-2">Tendências</h2>
-        <div className="flex overflow-x-scroll space-x-4">
-          {playlists.map((playlist) => (
-            <div
-              key={playlist._id}
-              className="min-w-[200px] bg-gray-800 p-4 rounded-lg"
-            >
-              <h3 className="text-xl font-bold">{playlist._name}</h3>
-              <p className="text-sm">{playlist._description}</p>
-            </div>
-          ))}
-        </div>
-      </div>
+    );
+  }
 
-      <div className="fixed bottom-0 left-0 right-0 bg-gray-800 py-2 border-t border-gray-700 flex justify-around lg:hidden">
-        <button
-          onClick={() => navigate("/home")}
-          className="py-2 px-4 text-white text-lg"
-        >
-          Início
-        </button>
-        <button
-          onClick={() => navigate("/search")}
-          className="py-2 px-4 text-white text-lg"
-        >
-          Procurar
-        </button>
-        <button
-          onClick={() => navigate("/playlists")}
-          className="py-2 px-4 text-white text-lg"
-        >
-          Minhas Músicas
-        </button>
+  if (error) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="text-xl text-red-500">{error}</div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="flex flex-col h-screen">
+      <Header onLogout={handleLogout} />
+      <div className="flex flex-1">
+        <SidebarPlaylists playlists={playlists} />
+        <div className="flex-1 p-4 overflow-y-auto">
+          <TrendingPlaylists playlists={playlists} />
+          <SongsList songs={songs} />
+        </div>
       </div>
     </div>
   );
