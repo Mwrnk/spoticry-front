@@ -1,4 +1,4 @@
-// Home.jsx
+// src/pages/Home.jsx
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { fetchPlaylists, fetchSongs } from "../services/api";
@@ -6,8 +6,8 @@ import SidebarPlaylists from "../components/SidebarPlaylists";
 import TrendingPlaylists from "../components/TrendingPlaylists";
 import SongsList from "../components/SongsList";
 import Header from "../components/Header";
+import BottomNavBar from "../components/BottomNavBar";
 import SearchResults from "../components/SearchResults";
-
 function Home() {
   const [playlists, setPlaylists] = useState([]);
   const [songs, setSongs] = useState([]);
@@ -78,11 +78,11 @@ function Home() {
   }
 
   return (
-    <div className="flex flex-col h-screen">
+    <div className="grid h-screen grid-rows-[auto_1fr_auto]">
       <Header onLogout={handleLogout} onSearch={handleSearch} />
-      <div className="flex flex-1">
+      <main className="flex overflow-hidden">
         <SidebarPlaylists playlists={playlists} />
-        <div className="flex-1 p-4 overflow-y-auto">
+        <div className="flex-1 overflow-y-auto p-4">
           {searchQuery ? (
             <SearchResults
               searchQuery={searchQuery}
@@ -96,7 +96,8 @@ function Home() {
             </>
           )}
         </div>
-      </div>
+      </main>
+      <BottomNavBar playlists={playlists} songs={songs} />
     </div>
   );
 }
