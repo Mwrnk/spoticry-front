@@ -1,15 +1,12 @@
-// src/components/Header.jsx
-import React from "react";
 import logo from "../assets/logo.svg";
 import user from "../assets/user.svg";
-
 function Header({ onLogout, onSearch }) {
   const handleInputChange = (event) => {
     onSearch(event.target.value);
   };
 
   return (
-    <header className="flex justify-between items-center p-4 bg-gray-800">
+    <header className="bg-gray-800 p-4 flex justify-between items-center">
       <div className="flex items-center">
         <img src={logo} alt="Logo" className="h-8" />
       </div>
