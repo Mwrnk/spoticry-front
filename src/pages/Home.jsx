@@ -6,12 +6,14 @@ import SidebarPlaylists from "../components/SidebarPlaylists";
 import TrendingPlaylists from "../components/TrendingPlaylists";
 import SongsList from "../components/SongsList";
 import Header from "../components/Header";
+import SearchResults from "../components/SearchResults";
 
 function Home() {
   const [playlists, setPlaylists] = useState([]);
   const [songs, setSongs] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -51,6 +53,14 @@ function Home() {
     navigate("/login");
   };
 
+  const handleSearch = (query) => {
+    setSearchQuery(query);
+  };
+
+  const clearSearch = () => {
+    setSearchQuery("");
+  };
+
   if (isLoading) {
     return (
       <div className="flex justify-center items-center h-screen">
@@ -69,12 +79,22 @@ function Home() {
 
   return (
     <div className="flex flex-col h-screen">
-      <Header onLogout={handleLogout} />
+      <Header onLogout={handleLogout} onSearch={handleSearch} />
       <div className="flex flex-1">
         <SidebarPlaylists playlists={playlists} />
         <div className="flex-1 p-4 overflow-y-auto">
-          <TrendingPlaylists playlists={playlists} />
-          <SongsList songs={songs} />
+          {searchQuery ? (
+            <SearchResults
+              searchQuery={searchQuery}
+              songs={songs}
+              onClearSearch={clearSearch}
+            />
+          ) : (
+            <>
+              <TrendingPlaylists playlists={playlists} />
+              <SongsList songs={songs} />
+            </>
+          )}
         </div>
       </div>
     </div>

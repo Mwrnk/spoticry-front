@@ -1,8 +1,13 @@
 // src/components/Header.jsx
+import React from "react";
 import logo from "../assets/logo.svg";
 import user from "../assets/user.svg";
 
-function Header({ onLogout }) {
+function Header({ onLogout, onSearch }) {
+  const handleInputChange = (event) => {
+    onSearch(event.target.value);
+  };
+
   return (
     <header className="flex justify-between items-center p-4 bg-gray-800">
       <div className="flex items-center">
@@ -13,6 +18,7 @@ function Header({ onLogout }) {
           type="text"
           placeholder="O que você quer ouvir hoje?"
           className="w-1/4 p-2 rounded-lg bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+          onChange={handleInputChange}
         />
       </div>
       <div className="flex items-center">
