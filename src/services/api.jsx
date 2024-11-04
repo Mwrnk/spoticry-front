@@ -17,3 +17,17 @@ export const fetchPlaylists = async () => {
     return [];
   }
 };
+
+export const fetchSongs = async () => {
+  try {
+    const token = localStorage.getItem("token");
+    const response = await axios.get(`${BASE_URL}/song`, {
+      headers: {
+        Authorization: token,
+      },
+    });
+    return response.data.songs;
+  } catch (error) {
+    console.error("Erro ao buscar musicas", error);
+  }
+};
