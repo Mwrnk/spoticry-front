@@ -1,4 +1,3 @@
-// src/pages/Home.jsx
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { fetchPlaylists, fetchSongs } from "../services/api";
@@ -8,6 +7,7 @@ import SongsList from "../components/SongsList";
 import Header from "../components/Header";
 import BottomNavBar from "../components/BottomNavBar";
 import SearchResults from "../components/SearchResults";
+
 function Home() {
   const [playlists, setPlaylists] = useState([]);
   const [songs, setSongs] = useState([]);
@@ -61,6 +61,19 @@ function Home() {
     setSearchQuery("");
   };
 
+  const refreshSongs = async () => {
+    try {
+      const songsData = await fetchSongs();
+      if (Array.isArray(songsData)) {
+        setSongs(songsData);
+      } else {
+        setError("Erro ao carregar músicas atualizadas");
+      }
+    } catch (err) {
+      setError("Erro ao atualizar músicas. Por favor, tente novamente.");
+    }
+  };
+
   if (isLoading) {
     return (
       <div className="flex justify-center items-center h-screen">
@@ -79,7 +92,11 @@ function Home() {
 
   return (
     <div className="grid h-screen grid-rows-[auto_1fr_auto]">
-      <Header onLogout={handleLogout} onSearch={handleSearch} />
+      <Header
+        onLogout={handleLogout}
+        onSearch={handleSearch}
+        onAddSuccess={refreshSongs}
+      />
       <main className="flex overflow-hidden">
         <SidebarPlaylists playlists={playlists} />
         <div className="flex-1 overflow-y-auto p-4">
@@ -92,7 +109,6 @@ function Home() {
           ) : (
             <>
               <TrendingPlaylists playlists={playlists} />
-              <SongsList songs={songs} />
             </>
           )}
         </div>
