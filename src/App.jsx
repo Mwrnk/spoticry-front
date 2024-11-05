@@ -5,7 +5,8 @@ import {
   Navigate,
 } from "react-router-dom";
 import Login from "./pages/Login";
-import Home from "./pages/Home";
+import Home from "./pages/Discover";
+import Discover from "./pages/Discover";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
@@ -23,11 +24,15 @@ function App() {
           }
         />
         <Route
-          path="/search"
-          element={<ProtectedRoute>{/* Componente de Busca */}</ProtectedRoute>}
+          path="/discover"
+          element={
+            <ProtectedRoute>
+              <Discover />
+            </ProtectedRoute>
+          }
         />
         <Route
-          path="/playlists"
+          path="/"
           element={
             <ProtectedRoute>
               {/* Componente de Minhas Músicas */}
