@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { fetchPlaylists, fetchSongs } from "../services/api";
-import SidebarPlaylists from "../components/SidebarPlaylists";
-import TrendingPlaylists from "../components/TrendingPlaylists";
+import Sidebar from "../components/Sidebar";
 import SongsList from "../components/SongsList";
 import Header from "../components/Header";
 import BottomNavBar from "../components/BottomNavBar";
@@ -98,7 +97,7 @@ function Home() {
         onAddSuccess={refreshSongs}
       />
       <main className="flex overflow-hidden">
-        <SidebarPlaylists playlists={playlists} />
+        <Sidebar />
         <div className="flex-1 overflow-y-auto p-4">
           {searchQuery ? (
             <SearchResults

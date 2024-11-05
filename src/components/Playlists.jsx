@@ -1,6 +1,3 @@
-/* eslint-disable react/prop-types */
-// src/components/TrendingPlaylists.jsx
-
 function TrendingPlaylists({ playlists }) {
   return (
     <div className="mb-8">
