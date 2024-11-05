@@ -107,9 +107,7 @@ function Home() {
               onClearSearch={clearSearch}
             />
           ) : (
-            <>
-              <TrendingPlaylists playlists={playlists} />
-            </>
+            <SongsList songs={songs} /> // Exibindo a lista de músicas
           )}
         </div>
       </main>
