@@ -1,22 +1,26 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { login } from "../services/authService";
+import { login } from "../services/users";
 import spoticryIcon from "../assets/spoticry.svg";
+import useForm from "../hooks/useForm";
 
-function Login() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState(null);
+export const LoginForm = () => {
+  const [form, onChange, clear] = useForm({ email: "", password: "" });
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-  const handleLogin = async () => {
+  const onSubmitLogin = async (event) => {
+    event.preventDefault();
+    setIsLoading(true);
     setError(null);
-    const result = await login(email, password);
 
-    if (result.success) {
-      navigate("/home");
-    } else {
-      setError(result.error);
+    try {
+      await login(form, navigate);
+    } catch (error) {
+      setError(error.response.data.error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -36,8 +40,10 @@ function Login() {
               <label className="text-lg font-medium">Email</label>
               <input
                 type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                name="email"
+                required={true}
+                value={form.email}
+                onChange={onChange}
                 className="w-full border-2 border-zinc-600 rounded-xl p-4 mt-1 bg-transparent"
                 placeholder="Digite seu email"
               />
@@ -46,8 +52,9 @@ function Login() {
               <label className="text-lg font-medium">Senha</label>
               <input
                 type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                name="password"
+                value={form.password}
+                onChange={onChange}
                 className="w-full border-2 border-zinc-600 rounded-xl p-4 mt-1 bg-transparent"
                 placeholder="Digite sua senha"
               />
@@ -55,10 +62,12 @@ function Login() {
             {error && <p className="text-red-500 mt-4">{error}</p>}
             <div className="mt-8 flex flex-col gap-y-4">
               <button
-                onClick={handleLogin}
+                onClick={onSubmitLogin}
+                type="submit"
                 className="active:scale-[.98] active:duration-75 hover:scale-[1.01] ease-in-out transition-all py-4 rounded-xl bg-gradient-to-r from-sky-500 to-green-500 text-white text-lg font-bold"
+                disabled={isLoading}
               >
-                Login
+                {isLoading ? "Carregando..." : "Login"}
               </button>
             </div>
           </div>
@@ -74,6 +83,6 @@ function Login() {
       </div>
     </div>
   );
-}
+};
 
-export default Login;
+export default LoginForm;
