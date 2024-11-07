@@ -75,8 +75,10 @@ function Discover() {
 
   if (isLoading) {
     return (
-      <div className="flex justify-center items-center h-screen">
-        <div className="text-xl">Carregando...</div>
+      <div className="flex  justify-center items-center h-screen space-x-2">
+        <span className="w-[3px] h-5 bg-white/50 rounded-full animate-scale-up4"></span>
+        <span className="w-[3px] h-9 bg-white/50 rounded-full animate-scale-up4 [animation-delay:0.25s]"></span>
+        <span className="w-[3px] h-5 bg-white/50 rounded-full animate-scale-up4 [animation-delay:0.5s]"></span>
       </div>
     );
   }
