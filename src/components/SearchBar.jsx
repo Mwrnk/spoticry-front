@@ -1,11 +1,12 @@
 // src/components/SearchBar.jsx
-function SearchBar({ placeholder, onSearch }) {
+function SearchBar({ placeholder, onSearch, value, onChange }) {
   return (
     <input
       type="text"
       placeholder={placeholder}
+      value={value}
       className="w-full mx-2 p-2 rounded-lg bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-      onChange={(e) => onSearch(e.target.value)} // Lida com a busca
+      onChange={(e) => onSearch(e.target.value)}
     />
   );
 }
