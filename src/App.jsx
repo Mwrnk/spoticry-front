@@ -6,6 +6,7 @@ import {
 } from "react-router-dom";
 import Login from "./pages/Login";
 import Home from "./pages/Home";
+import Musics from "./pages/Musics";
 import Discover from "./pages/Discover";
 import ProtectedRoute from "./components/ProtectedRoute";
 
@@ -32,10 +33,10 @@ function App() {
           }
         />
         <Route
-          path="/"
+          path="/musics"
           element={
             <ProtectedRoute>
-              {/* Componente de Minhas Músicas */}
+              <Musics />
             </ProtectedRoute>
           }
         />

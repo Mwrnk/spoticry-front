@@ -4,6 +4,7 @@ import { fetchPlaylists, fetchSongs } from "../services/api";
 import Sidebar from "../components/Sidebar";
 import SongsList from "../components/SongsList";
 import Header from "../components/Header";
+import SearchBar from "../components/SearchBar";
 import BottomNavBar from "../components/BottomNavBar";
 import SearchResults from "../components/SearchResults";
 
@@ -54,10 +55,12 @@ function Discover() {
 
   const handleSearch = (query) => {
     setSearchQuery(query);
+    refreshSongs();
   };
 
   const clearSearch = () => {
     setSearchQuery("");
+    refreshSongs();
   };
 
   const refreshSongs = async () => {
@@ -93,15 +96,17 @@ function Discover() {
 
   return (
     <div className="grid h-screen grid-rows-[auto_1fr_auto]">
-      <Header
-        onLogout={handleLogout}
-        onSearch={handleSearch}
-        onAddSuccess={refreshSongs}
-      />
+      <Header onLogout={handleLogout} />
       <main className="flex overflow-hidden">
         <Sidebar />
 
         <div className="flex-1 overflow-y-auto p-4">
+          <SearchBar
+            onSearch={handleSearch}
+            placeholder={"Pesquisar músicas..."}
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
           <h1 className="text-4xl p-4 m-8 text-white ">Todas as Músicas</h1>
           {searchQuery ? (
             <SearchResults

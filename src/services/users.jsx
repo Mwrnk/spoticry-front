@@ -1,5 +1,5 @@
 import axios from "axios";
-import { getTokenData } from "../services/getTokenData"; // Ensure correct import path
+import { getTokenData } from "./getTokenData";
 
 const BASE_URL =
   "https://mqjnto3qw2.execute-api.us-east-1.amazonaws.com/default";

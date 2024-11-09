@@ -1,5 +1,4 @@
-// src/components/AddMusicModal.jsx
-import React, { useState } from "react";
+import { useState } from "react";
 
 function AddMusicModal({ isOpen, onClose, onAdd }) {
   const [title, setTitle] = useState("");
@@ -15,7 +14,7 @@ function AddMusicModal({ isOpen, onClose, onAdd }) {
 
   return (
     <div className="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center">
-      <div className="bg-white p-6 rounded-lg shadow-lg w-80">
+      <div className="bg-gray-600 p-6 rounded-lg shadow-lg w-80">
         <h2 className="text-lg font-semibold mb-4">Adicionar Música</h2>
         <input
           type="text"

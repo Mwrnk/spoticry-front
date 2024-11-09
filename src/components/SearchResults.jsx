@@ -1,5 +1,4 @@
 // src/components/SearchResults.jsx
-import React from "react";
 import SongsList from "./SongsList";
 
 function SearchResults({ searchQuery, songs, onClearSearch }) {
