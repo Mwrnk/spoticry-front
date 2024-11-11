@@ -5,10 +5,18 @@ import SearchBar from "../components/SearchBar";
 import SearchResults from "../components/SearchResults";
 import { fetchSongs } from "../services/api";
 import SongsList from "../components/SongsList";
+import { getTokenData } from "../services/getTokenData";
+import add from "../assets/add.svg";
+import AddMusicModal from "../components/AddMusicModal";
+import axios from "axios";
 
 function Musics() {
   const [searchQuery, setSearchQuery] = useState("");
   const [songs, setSongs] = useState([]);
+  const [userId, setUserId] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const BASE_URL =
+    "https://mqjnto3qw2.execute-api.us-east-1.amazonaws.com/default";
 
   const handleSearch = (query) => {
     setSearchQuery(query);
@@ -18,14 +26,54 @@ function Musics() {
     setSearchQuery("");
   };
 
+  const handleAddMusic = (newSong) => {
+    const token = localStorage.getItem("token");
+    const userId = getTokenData(token).id;
+
+    const newSongData = {
+      title: newSong.title,
+      artist: newSong.artist,
+      url: newSong.url,
+      userId: userId,
+    };
+
+    addSong(newSongData, token);
+  };
+
+  const addSong = async (newSongData, token) => {
+    try {
+      const response = await axios.post(`${BASE_URL}/song`, newSongData, {
+        headers: {
+          Authorization: token,
+        },
+      });
+
+      if (response.status === 201) {
+        const updatedSongs = await fetchSongs();
+        setSongs(updatedSongs);
+      }
+    } catch (error) {
+      console.error("Erro ao adicionar música", error);
+    }
+  };
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    const tokenData = getTokenData(token);
+    setUserId(tokenData?.id);
+  }, []);
+
   useEffect(() => {
     const fetchData = async () => {
       const data = await fetchSongs();
-      setSongs(data);
+      const userSongs = data.filter((song) => song.userId === userId);
+      setSongs(userSongs);
     };
 
-    fetchData();
-  }, []);
+    if (userId) {
+      fetchData();
+    }
+  }, [userId]);
 
   return (
     <div className="grid h-screen grid-rows-[auto_1fr_auto]">
@@ -40,7 +88,23 @@ function Musics() {
             onSearch={handleSearch}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
-          <h1 className="text-2xl font-bold">Suas musicas</h1>
+          <div className="flex items-center justify-center my-4 py-2 space-x-8">
+            <h1 className="text-2xl font-bold">Suas musicas</h1>
+            <button
+              className="py-2 px-2 bg-blue-500 text-white rounded-lg"
+              onClick={() => setIsModalOpen(true)}
+            >
+              <img src={add} alt="add" />
+            </button>
+          </div>
+
+          {isModalOpen && (
+            <AddMusicModal
+              isOpen={isModalOpen}
+              onClose={() => setIsModalOpen(false)}
+              onAdd={handleAddMusic}
+            />
+          )}
           {searchQuery ? (
             <SearchResults
               searchQuery={searchQuery}
