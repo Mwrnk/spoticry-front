@@ -1,5 +1,5 @@
 // src/components/SongsList.jsx
-function SongsList({ songs, canEditfea }) {
+function SongsList({ songs, canEdit }) {
   return (
     <div className="grid grid-cols-1 gap-4">
       {songs.map((song) => (
