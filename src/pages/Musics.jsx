@@ -10,46 +10,44 @@ import add from "../assets/add.svg";
 import AddMusicModal from "../components/AddMusicModal";
 import axios from "axios";
 
+const BASE_URL =
+  "https://mqjnto3qw2.execute-api.us-east-1.amazonaws.com/default";
+
 function Musics() {
   const [searchQuery, setSearchQuery] = useState("");
   const [songs, setSongs] = useState([]);
   const [userId, setUserId] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const BASE_URL =
-    "https://mqjnto3qw2.execute-api.us-east-1.amazonaws.com/default";
 
-  const handleSearch = (query) => {
-    setSearchQuery(query);
-  };
+  const token = localStorage.getItem("token");
+  const isUser = userId === getTokenData(token)?.id;
 
-  const clearSearch = () => {
-    setSearchQuery("");
-  };
+  const handleSearch = (query) => setSearchQuery(query);
+  const clearSearch = () => setSearchQuery("");
+  const handleAddMusic = (newSong) => addSong({ ...newSong, userId });
 
-  const handleAddMusic = (newSong) => {
-    const token = localStorage.getItem("token");
-    const userId = getTokenData(token).id;
+  useEffect(() => {
+    setUserId(getTokenData(token)?.id);
+  }, [token]);
 
-    const newSongData = {
-      title: newSong.title,
-      artist: newSong.artist,
-      url: newSong.url,
-      userId: userId,
+  useEffect(() => {
+    const fetchUserSongs = async () => {
+      const data = await fetchSongs();
+      const userSongs = data.filter((song) => song.userId === userId);
+      setSongs(userSongs);
     };
 
-    addSong(newSongData, token);
-  };
+    if (userId) fetchUserSongs();
+  }, [userId]);
 
-  const addSong = async (newSongData, token) => {
+  const addSong = async (newSongData) => {
     try {
       const response = await axios.post(`${BASE_URL}/song`, newSongData, {
-        headers: {
-          Authorization: token,
-        },
+        headers: { Authorization: token },
       });
 
       if (response.status === 201) {
-        const updatedSongs = await fetchSongs();
+        const updatedSongs = [...songs, newSongData];
         setSongs(updatedSongs);
       }
     } catch (error) {
@@ -57,28 +55,10 @@ function Musics() {
     }
   };
 
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    const tokenData = getTokenData(token);
-    setUserId(tokenData?.id);
-  }, []);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const data = await fetchSongs();
-      const userSongs = data.filter((song) => song.userId === userId);
-      setSongs(userSongs);
-    };
-
-    if (userId) {
-      fetchData();
-    }
-  }, [userId]);
-
   return (
     <div className="grid h-screen grid-rows-[auto_1fr_auto]">
       <Header />
-      <main className="flex overflow-hidden ">
+      <main className="flex overflow-hidden">
         <Sidebar />
 
         <div className="flex-1 overflow-y-auto p-4">
@@ -86,9 +66,8 @@ function Musics() {
             searchQuery={searchQuery}
             placeholder="Pesquisar em suas músicas..."
             onSearch={handleSearch}
-            onChange={(e) => setSearchQuery(e.target.value)}
           />
-          <div className="flex items-center justify-center my-4 py-2 space-x-8">
+          <div className="flex items-center justify-start my-4 py-2 space-x-8">
             <h1 className="text-2xl font-bold">Suas musicas</h1>
             <button
               className="py-2 px-2 bg-blue-500 text-white rounded-lg"
@@ -112,7 +91,7 @@ function Musics() {
               onClearSearch={clearSearch}
             />
           ) : (
-            <SongsList songs={songs} />
+            <SongsList songs={songs} canEdit={isUser} />
           )}
         </div>
       </main>
