@@ -2,9 +2,9 @@
 function SongsList({ songs, canEdit }) {
   return (
     <div className="grid grid-cols-1 gap-4">
-      {songs.map((song) => (
+      {songs.map((song, index) => (
         <div
-          key={song.id}
+          key={`${song.id}-${index}`}
           className="flex flex-col p-4 bg-gray-700 rounded-lg shadow-md"
         >
           <h3 className="text-lg text-white">{song.title}</h3>

@@ -46,7 +46,7 @@ function Musics() {
         headers: { Authorization: token },
       });
 
-      if (response.status === 201) {
+      if (response.status === 200) {
         const updatedSongs = [...songs, newSongData];
         setSongs(updatedSongs);
       }
