@@ -7,7 +7,7 @@ import { fetchSongs } from "../services/api";
 import SongsList from "../components/SongsList";
 import { getTokenData } from "../services/getTokenData";
 import add from "../assets/add.svg";
-import AddMusicModal from "../components/AddMusicModal";
+import MusicModal from "../components/MusicModal";
 import axios from "axios";
 
 const BASE_URL =
@@ -18,6 +18,7 @@ function Musics() {
   const [songs, setSongs] = useState([]);
   const [userId, setUserId] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedSong, setSelectedSong] = useState(null);
 
   const token = localStorage.getItem("token");
   const isUser = userId === getTokenData(token)?.id;
@@ -25,6 +26,11 @@ function Musics() {
   const handleSearch = (query) => setSearchQuery(query);
   const clearSearch = () => setSearchQuery("");
   const handleAddMusic = (newSong) => addSong({ ...newSong, userId });
+
+  const handleEditMusic = (songId, updatedSong) => {
+    editSong(songId, updatedSong);
+    setSelectedSong(null);
+  };
 
   useEffect(() => {
     setUserId(getTokenData(token)?.id);
@@ -55,6 +61,27 @@ function Musics() {
     }
   };
 
+  const editSong = async (songId, updatedSongData) => {
+    try {
+      const response = await axios.patch(
+        `${BASE_URL}/song/${songId}`,
+        updatedSongData,
+        {
+          headers: { Authorization: token },
+        }
+      );
+
+      if (response.status === 200) {
+        const updatedSongs = songs.map((song) =>
+          song.id === songId ? { ...song, ...updatedSongData } : song
+        );
+        setSongs(updatedSongs);
+      }
+    } catch (error) {
+      console.error("Erro ao editar música", error);
+    }
+  };
+
   return (
     <div className="grid h-screen grid-rows-[auto_1fr_auto]">
       <Header />
@@ -68,7 +95,7 @@ function Musics() {
             onSearch={handleSearch}
           />
           <div className="flex items-center justify-start my-4 py-2 space-x-8">
-            <h1 className="text-2xl font-bold">Suas musicas</h1>
+            <h1 className="text-2xl font-bold">Suas músicas</h1>
             <button
               className="py-2 px-2 bg-blue-500 text-white rounded-lg"
               onClick={() => setIsModalOpen(true)}
@@ -78,10 +105,10 @@ function Musics() {
           </div>
 
           {isModalOpen && (
-            <AddMusicModal
+            <MusicModal
               isOpen={isModalOpen}
               onClose={() => setIsModalOpen(false)}
-              onAdd={handleAddMusic}
+              onSave={handleAddMusic}
             />
           )}
           {searchQuery ? (
@@ -91,7 +118,23 @@ function Musics() {
               onClearSearch={clearSearch}
             />
           ) : (
-            <SongsList songs={songs} canEdit={isUser} />
+            <>
+              <SongsList
+                songs={songs}
+                canEdit={isUser}
+                onEdit={(song) => setSelectedSong(song)}
+              />
+              {selectedSong && (
+                <MusicModal
+                  isOpen={!!selectedSong}
+                  onClose={() => setSelectedSong(null)}
+                  onSave={(updatedSong) =>
+                    handleEditMusic(selectedSong.id, updatedSong)
+                  }
+                  music={selectedSong}
+                />
+              )}
+            </>
           )}
         </div>
       </main>

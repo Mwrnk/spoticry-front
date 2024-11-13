@@ -1,5 +1,5 @@
 // src/components/SongsList.jsx
-function SongsList({ songs, canEdit }) {
+function SongsList({ songs, canEdit, onEdit }) {
   return (
     <div className="grid grid-cols-1 gap-4">
       {songs.map((song, index) => (
@@ -26,7 +26,7 @@ function SongsList({ songs, canEdit }) {
                   Delete
                 </button>
                 <button
-                  onClick={() => editSong(song.id)}
+                  onClick={() => onEdit(song)}
                   className="flex items-center p-4 m-4 text-white bg-green-500 rounded-lg hover:bg-green-600"
                 >
                   Edit
