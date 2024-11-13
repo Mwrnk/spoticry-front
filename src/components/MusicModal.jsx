@@ -1,12 +1,13 @@
 import { useState } from "react";
 
-function AddMusicModal({ isOpen, onClose, onAdd }) {
-  const [title, setTitle] = useState("");
-  const [artist, setArtist] = useState("");
-  const [url, setUrl] = useState("");
+function MusicModal({ isOpen, onClose, onSave, music = {} }) {
+  const [title, setTitle] = useState(music.title || "");
+  const [artist, setArtist] = useState(music.artist || "");
+  const [url, setUrl] = useState(music.url || "");
+  const isEditing = Boolean(music.id);
 
-  const handleAdd = () => {
-    onAdd({ title, artist, url });
+  const handleSave = () => {
+    onSave({ id: music.id, title, artist, url });
     onClose();
   };
 
@@ -15,7 +16,9 @@ function AddMusicModal({ isOpen, onClose, onAdd }) {
   return (
     <div className="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center">
       <div className="bg-gray-600 p-6 rounded-lg shadow-lg w-80">
-        <h2 className="text-lg font-semibold mb-4">Adicionar Música</h2>
+        <h2 className="text-lg font-semibold mb-4">
+          {isEditing ? "Editar Música" : "Adicionar Música"}
+        </h2>
         <input
           type="text"
           placeholder="Título"
@@ -45,10 +48,10 @@ function AddMusicModal({ isOpen, onClose, onAdd }) {
             Cancelar
           </button>
           <button
-            onClick={handleAdd}
+            onClick={handleSave}
             className="px-4 py-2 bg-blue-500 text-white rounded"
           >
-            Adicionar
+            {isEditing ? "Salvar Alterações" : "Adicionar"}
           </button>
         </div>
       </div>
@@ -56,4 +59,4 @@ function AddMusicModal({ isOpen, onClose, onAdd }) {
   );
 }
 
-export default AddMusicModal;
+export default MusicModal;
