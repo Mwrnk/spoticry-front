@@ -33,13 +33,15 @@ function MusicModal({ isOpen, onClose, onSave, music = {} }) {
           onChange={(e) => setArtist(e.target.value)}
           className="w-full p-2 mb-2 border rounded"
         />
-        <input
-          type="text"
-          placeholder="URL"
-          value={url}
-          onChange={(e) => setUrl(e.target.value)}
-          className="w-full p-2 mb-4 border rounded"
-        />
+        {!isEditing && (
+          <input
+            type="text"
+            placeholder="URL"
+            value={url}
+            onChange={(e) => setUrl(e.target.value)}
+            className="w-full p-2 mb-4 border rounded"
+          />
+        )}
         <div className="flex justify-end">
           <button
             onClick={onClose}

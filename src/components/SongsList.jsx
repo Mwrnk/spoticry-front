@@ -1,5 +1,5 @@
 // src/components/SongsList.jsx
-function SongsList({ songs, canEdit, onEdit }) {
+function SongsList({ songs, canEdit, onEdit, onDelete }) {
   return (
     <div className="grid grid-cols-1 gap-4">
       {songs.map((song, index) => (
@@ -10,6 +10,7 @@ function SongsList({ songs, canEdit, onEdit }) {
           <h3 className="text-lg text-white">{song.title}</h3>
           <p className="text-gray-400">{song.artist}</p>
           <p className="text-gray-500">{song.userId}</p>
+          <p className="text-gray-300">{song.id}</p>
           <div className="flex flex-row mt-4 border-t border-gray-600">
             <button
               onClick={() => playSong(song.url)}
@@ -20,7 +21,7 @@ function SongsList({ songs, canEdit, onEdit }) {
             {canEdit && (
               <>
                 <button
-                  onClick={() => deleteSong(song.id)}
+                  onClick={() => onDelete(song.id)}
                   className="flex items-center p-4 m-4 text-white bg-red-500 rounded-lg hover:bg-red-600"
                 >
                   Delete

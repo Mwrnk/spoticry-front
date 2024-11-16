@@ -25,7 +25,11 @@ function Musics() {
 
   const handleSearch = (query) => setSearchQuery(query);
   const clearSearch = () => setSearchQuery("");
-  const handleAddMusic = (newSong) => addSong({ ...newSong, userId });
+
+  const handleAddMusic = (newSong) => {
+    addSong({ ...newSong, userId });
+    setSelectedSong(null);
+  };
 
   const handleEditMusic = (songId, updatedSong) => {
     editSong(songId, updatedSong);
@@ -37,14 +41,14 @@ function Musics() {
   }, [token]);
 
   useEffect(() => {
-    const fetchUserSongs = async () => {
-      const data = await fetchSongs();
-      const userSongs = data.filter((song) => song.userId === userId);
-      setSongs(userSongs);
-    };
-
     if (userId) fetchUserSongs();
   }, [userId]);
+
+  const fetchUserSongs = async () => {
+    const data = await fetchSongs();
+    const userSongs = data.filter((song) => song.userId === userId);
+    setSongs(userSongs);
+  };
 
   const addSong = async (newSongData) => {
     try {
@@ -53,8 +57,7 @@ function Musics() {
       });
 
       if (response.status === 200) {
-        const updatedSongs = [...songs, newSongData];
-        setSongs(updatedSongs);
+        fetchUserSongs();
       }
     } catch (error) {
       console.error("Erro ao adicionar música", error);
@@ -79,6 +82,17 @@ function Musics() {
       }
     } catch (error) {
       console.error("Erro ao editar música", error);
+    }
+  };
+
+  const deleteSong = async (songId) => {
+    try {
+      await axios.delete(`${BASE_URL}/song/${songId}`, {
+        headers: { Authorization: token },
+      });
+      fetchUserSongs();
+    } catch (error) {
+      console.error("Erro ao deletar musica", error);
     }
   };
 
@@ -123,6 +137,7 @@ function Musics() {
                 songs={songs}
                 canEdit={isUser}
                 onEdit={(song) => setSelectedSong(song)}
+                onDelete={deleteSong}
               />
               {selectedSong && (
                 <MusicModal
