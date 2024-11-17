@@ -1,7 +1,5 @@
-import { useState, useEffect } from "react";
-import Header from "../components/Header";
-import Sidebar from "../components/Sidebar";
-import SearchBar from "../components/SearchBar";
+import { useState, useEffect, useContext } from "react";
+import { UserContext } from "../context/userContext";
 import SearchResults from "../components/SearchResults";
 import { fetchSongs } from "../services/api";
 import SongsList from "../components/SongsList";
@@ -9,19 +7,18 @@ import { getTokenData } from "../services/getTokenData";
 import add from "../assets/add.svg";
 import MusicModal from "../components/MusicModal";
 import axios from "axios";
-
+import Header from "../components/Header";
+import Sidebar from "../components/Sidebar";
+import SearchBar from "../components/SearchBar";
 const BASE_URL =
   "https://mqjnto3qw2.execute-api.us-east-1.amazonaws.com/default";
 
 function Musics() {
+  const { userId, token } = useContext(UserContext);
   const [searchQuery, setSearchQuery] = useState("");
   const [songs, setSongs] = useState([]);
-  const [userId, setUserId] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedSong, setSelectedSong] = useState(null);
-
-  const token = localStorage.getItem("token");
-  const isUser = userId === getTokenData(token)?.id;
 
   const handleSearch = (query) => setSearchQuery(query);
   const clearSearch = () => setSearchQuery("");
@@ -37,12 +34,8 @@ function Musics() {
   };
 
   useEffect(() => {
-    setUserId(getTokenData(token)?.id);
-  }, [token]);
-
-  useEffect(() => {
-    if (userId) fetchUserSongs();
-  }, [userId]);
+    fetchUserSongs();
+  }, [userId]); // Fetch user songs when the userId changes
 
   const fetchUserSongs = async () => {
     const data = await fetchSongs();
@@ -53,7 +46,9 @@ function Musics() {
   const addSong = async (newSongData) => {
     try {
       const response = await axios.post(`${BASE_URL}/song`, newSongData, {
-        headers: { Authorization: token },
+        headers: {
+          Authorization: token,
+        },
       });
 
       if (response.status === 200) {
@@ -70,7 +65,9 @@ function Musics() {
         `${BASE_URL}/song/${songId}`,
         updatedSongData,
         {
-          headers: { Authorization: token },
+          headers: {
+            Authorization: token,
+          },
         }
       );
 
@@ -88,7 +85,9 @@ function Musics() {
   const deleteSong = async (songId) => {
     try {
       await axios.delete(`${BASE_URL}/song/${songId}`, {
-        headers: { Authorization: token },
+        headers: {
+          Authorization: token,
+        },
       });
       fetchUserSongs();
     } catch (error) {
@@ -135,7 +134,7 @@ function Musics() {
             <>
               <SongsList
                 songs={songs}
-                canEdit={isUser}
+                canEdit={true}
                 onEdit={(song) => setSelectedSong(song)}
                 onDelete={deleteSong}
               />
