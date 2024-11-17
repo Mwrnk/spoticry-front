@@ -8,8 +8,8 @@ import Login from "./pages/Login";
 import Home from "./pages/Home";
 import Musics from "./pages/Musics";
 import Discover from "./pages/Discover";
+import Playlists from "./pages/Playlists";
 import ProtectedRoute from "./components/ProtectedRoute";
-
 function App() {
   return (
     <Router>
@@ -40,6 +40,15 @@ function App() {
             </ProtectedRoute>
           }
         />
+
+        <Route
+          path="/playlists"
+          element={
+            <ProtectedRoute>
+              <Playlists />
+            </ProtectedRoute>
+          }
+        ></Route>
       </Routes>
     </Router>
   );
