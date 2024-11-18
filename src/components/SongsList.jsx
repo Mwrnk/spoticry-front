@@ -1,5 +1,16 @@
-// src/components/SongsList.jsx
-function SongsList({ songs, canEdit, onEdit, onDelete }) {
+function SongsList({
+  songs = [],
+  canEdit = false,
+  onEdit = () => {},
+  onDelete = () => {},
+  isInPlaylistDetails = false,
+  onAddToPlaylist = () => {},
+}) {
+  if (!Array.isArray(songs)) {
+    console.error("songs is not an array:", songs);
+    return null;
+  }
+
   return (
     <div className="grid grid-cols-1 gap-4">
       {songs.map((song, index) => (
@@ -12,12 +23,17 @@ function SongsList({ songs, canEdit, onEdit, onDelete }) {
           <p className="text-gray-500">{song.userId}</p>
           <p className="text-gray-300">{song.id}</p>
           <div className="flex flex-row mt-4 border-t border-gray-600">
-            <button
-              onClick={() => playSong(song.url)}
-              className="flex items-center p-4 m-4 text-white bg-blue-500 rounded-lg hover:bg-blue-600"
-            >
+            <button className="flex items-center p-4 m-4 text-white bg-blue-500 rounded-lg hover:bg-blue-600">
               Play
             </button>
+            {isInPlaylistDetails && (
+              <button
+                onClick={() => onAddToPlaylist(song)}
+                className="flex items-center p-4 m-4 text-white bg-green-500 rounded-lg hover:bg-green-600"
+              >
+                Adicionar
+              </button>
+            )}
             {canEdit && (
               <>
                 <button

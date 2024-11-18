@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-function UserPlaylists({ playlists, onDelete }) {
+function UserPlaylists({ playlists, onSelect }) {
   const [covers, setCovers] = useState({});
 
   useEffect(() => {
@@ -19,7 +19,11 @@ function UserPlaylists({ playlists, onDelete }) {
   return (
     <div>
       {playlists.map((playlist) => (
-        <div key={playlist._id} className="flex items-center mb-4">
+        <div
+          key={playlist._id}
+          className="flex items-center mb-4"
+          onClick={() => onSelect(playlist)}
+        >
           <img
             src={covers[playlist._id]}
             alt="Capa da Playlist"
@@ -28,17 +32,7 @@ function UserPlaylists({ playlists, onDelete }) {
           <div className="flex flex-col">
             <h3 className="font-bold">{playlist._name}</h3>
             <p>{playlist._description}</p>
-            <div className="flex flex-row mt-2">
-              <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2">
-                Editar
-              </button>
-              <button
-                className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-                onClick={() => onDelete(playlist._id)}
-              >
-                Excluir
-              </button>
-            </div>
+            <div className="flex flex-row mt-2"></div>
           </div>
         </div>
       ))}
@@ -47,3 +41,7 @@ function UserPlaylists({ playlists, onDelete }) {
 }
 
 export default UserPlaylists;
+
+export const getPlaylistCover = (playlistName) =>
+  localStorage.getItem(`playlist-cover-${playlistName}`) ||
+  "https://placehold.co/32";

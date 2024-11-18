@@ -1,11 +1,12 @@
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+
 import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
-import UserPlaylists from "../components/UsersPlaylist";
-import add from "../assets/add.svg";
-import AddPlaylistModal from "../components/AddPlaylistModal";
-import { useState, useEffect } from "react";
-import axios from "axios";
+import PlaylistsContainer from "../components/PlaylistsContainer";
+import PlaylistDetails from "../components/PlaylistDetails";
+
 import { BASE_URL } from "../services/api";
 import { getTokenData } from "../services/getTokenData";
 
@@ -17,6 +18,7 @@ function Playlists() {
   const [playlists, setPlaylists] = useState([]);
   const [playlistCovers, setPlaylistCovers] = useState({});
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedPlaylist, setSelectedPlaylist] = useState(null);
 
   const fetchPlaylists = async () => {
     try {
@@ -41,21 +43,14 @@ function Playlists() {
       });
       setPlaylistCovers(covers);
     } catch (error) {
-      console.error("Erro ao buscar playlists do usuário:", error);
+      console.error("Erro ao buscar playlists do usu rio:", error);
     }
   };
-
-  const handleDeletePlaylist = async (playlistId) => {
-    try {
-      await axios.delete(`${BASE_URL}/playlist/${playlistId}`, {
-        headers: {
-          Authorization: token,
-        },
-      });
-      setPlaylists(playlists.filter((playlist) => playlist._id !== playlistId));
-    } catch (error) {
-      console.error("Erro ao deletar playlist:", error);
-    }
+  const handlePlaylistSelect = (playlist) => {
+    setSelectedPlaylist(playlist);
+  };
+  const handleClosePlaylist = () => {
+    setSelectedPlaylist(null);
   };
 
   useEffect(() => {
@@ -87,27 +82,23 @@ function Playlists() {
       <Header onLogout={handleLogout} />
       <main className="flex overflow-hidden">
         <Sidebar />
-        <div className="flex-1 overflow-y-auto p-4">
-          <div className="flex items-center justify-start my-4 py-2 space-x-8">
-            <h1 className="text-2xl font-bold">Suas Playlists</h1>
-            <button
-              className="py-2 px-2 bg-blue-500 text-white rounded-lg"
-              onClick={openModal}
-            >
-              <img src={add} alt="add" />
-            </button>
-          </div>
-          <UserPlaylists
+        {!selectedPlaylist && (
+          <PlaylistsContainer
             playlists={playlists}
             covers={playlistCovers}
-            onDelete={handleDeletePlaylist}
+            isModalOpen={isModalOpen}
+            closeModal={closeModal}
+            openModal={openModal}
+            handleCreatePlaylist={handleCreatePlaylist}
+            onSelect={handlePlaylistSelect}
           />
-          <AddPlaylistModal
-            isOpen={isModalOpen}
-            onClose={closeModal}
-            onCreatePlaylist={handleCreatePlaylist}
+        )}
+        {selectedPlaylist && (
+          <PlaylistDetails
+            selectedPlaylist={selectedPlaylist}
+            onClose={handleClosePlaylist}
           />
-        </div>
+        )}
       </main>
     </div>
   );

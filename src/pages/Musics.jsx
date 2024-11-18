@@ -1,18 +1,17 @@
 import { useState, useEffect, useContext } from "react";
-import { UserContext } from "../context/userContext";
-import SearchResults from "../components/SearchResults";
-import { fetchSongs } from "../services/api";
-import SongsList from "../components/SongsList";
-import { getTokenData } from "../services/getTokenData";
-import add from "../assets/add.svg";
-import MusicModal from "../components/MusicModal";
 import axios from "axios";
+
+import { UserContext } from "../context/userContext";
+import { fetchSongs, BASE_URL } from "../services/api";
+
 import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
 import SearchBar from "../components/SearchBar";
-const BASE_URL =
-  "https://mqjnto3qw2.execute-api.us-east-1.amazonaws.com/default";
+import SearchResults from "../components/SearchResults";
+import SongsList from "../components/SongsList";
+import MusicModal from "../components/MusicModal";
 
+import add from "../assets/add.svg";
 function Musics() {
   const { userId, token } = useContext(UserContext);
   const [searchQuery, setSearchQuery] = useState("");
