@@ -2,7 +2,8 @@ import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 
 import { UserContext } from "../context/userContext";
-import { fetchSongs, BASE_URL } from "../services/api";
+import { BASE_URL } from "../services/api";
+import { fetchSongs } from "../services/songService";
 
 import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";

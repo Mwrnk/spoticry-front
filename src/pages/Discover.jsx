@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { fetchPlaylists, fetchSongs } from "../services/api";
+import { fetchSongs } from "../services/songService";
+
 import Sidebar from "../components/Sidebar";
 import SongsList from "../components/SongsList";
 import Header from "../components/Header";

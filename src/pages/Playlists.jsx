@@ -31,13 +31,14 @@ function Playlists() {
 
   const handleClosePlaylist = () => {
     setSelectedPlaylist(null);
+    fetchPlaylists();
   };
 
   useEffect(() => {
-    if (userId) {
+    if (userId && token) {
       fetchPlaylists();
     }
-  }, [userId]);
+  }, [userId, token]);
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -76,6 +77,7 @@ function Playlists() {
           <PlaylistDetails
             selectedPlaylist={selectedPlaylist}
             onClose={handleClosePlaylist}
+            token={token}
           />
         )}
       </main>
