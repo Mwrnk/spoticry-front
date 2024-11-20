@@ -1,5 +1,5 @@
-import UserPlaylists from "../components/UsersPlaylist";
-import AddPlaylistModal from "../components/AddPlaylistModal";
+import UserPlaylists from "./UsersPlaylist";
+import PlaylistModal from "./PlaylistModal";
 import add from "../assets/add.svg";
 const PlaylistsContainer = ({
   playlists,
@@ -26,7 +26,7 @@ const PlaylistsContainer = ({
         covers={covers}
         onSelect={onSelect}
       />
-      <AddPlaylistModal
+      <PlaylistModal
         isOpen={isModalOpen}
         onClose={closeModal}
         onCreatePlaylist={handleCreatePlaylist}

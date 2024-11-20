@@ -1,14 +1,14 @@
-import { useState, useEffect } from "react";
-import { fetchSongs, fetchPlaylistTracks } from "../services/api";
-import { getPlaylistCover } from "./UsersPlaylist";
-import SongsList from "./SongsList";
-import { UserContext } from "../context/userContext";
-import { useContext } from "react";
+import { useState, useEffect, useContext } from "react";
 import axios from "axios";
-import { BASE_URL } from "../services/api";
+import { UserContext } from "../context/userContext";
+import { BASE_URL, fetchPlaylistTracks, fetchSongs } from "../services/api";
+import { addSongToPlaylist } from "../services/playlistService";
+import SongsList from "./SongsList";
+import PlaylistModal from "./PlaylistModal";
 const PlaylistDetails = ({ selectedPlaylist, onClose }) => {
   const [songs, setSongs] = useState([]);
   const [tracks, setTracks] = useState([]);
+  const [isOpen, setIsOpen] = useState(false);
   const { userId, token } = useContext(UserContext);
 
   useEffect(() => {
@@ -31,18 +31,10 @@ const PlaylistDetails = ({ selectedPlaylist, onClose }) => {
 
   const handleAddToPlaylist = async (song) => {
     try {
-      await axios.post(
-        `${BASE_URL}/playlist/${selectedPlaylist._id}/song`,
-        { songId: song.id },
-        {
-          headers: {
-            Authorization: token,
-          },
-        }
-      );
+      await addSongToPlaylist(selectedPlaylist._id, song.id, token);
       await fetchPlaylistSongs();
     } catch (error) {
-      console.error("Error adding song to playlist", error);
+      console.error("Erro ao adicionar música à playlist", error);
     }
   };
 
@@ -75,7 +67,7 @@ const PlaylistDetails = ({ selectedPlaylist, onClose }) => {
       </div>
       <div className="flex items-center space-x-4 mb-4">
         <img
-          src={getPlaylistCover(selectedPlaylist._name)}
+          src={"https://placehold.co/32x32"}
           alt="Playlist Cover"
           className="w-32 h-32 rounded-lg"
         />
@@ -86,7 +78,10 @@ const PlaylistDetails = ({ selectedPlaylist, onClose }) => {
           <h2 className="text-3xl font-bold">{selectedPlaylist._name}</h2>
         </div>
         <div className="flex flex-col items-center space-y-2 m-4">
-          <button className="bg-green-600 text-white px-4 py-2 rounded-lg">
+          <button
+            onClick={() => setIsOpen(true)}
+            className="bg-green-600 text-white px-4 py-2 rounded-lg"
+          >
             Edit
           </button>
           <button className="bg-red-500 text-white px-4 py-2 rounded-lg">
@@ -109,6 +104,12 @@ const PlaylistDetails = ({ selectedPlaylist, onClose }) => {
           <SongsList songs={tracks} />
         </div>
       </div>
+      <PlaylistModal
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        isEditing={true}
+        playlist={selectedPlaylist}
+      />
     </div>
   );
 };
