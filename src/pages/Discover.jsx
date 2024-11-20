@@ -23,16 +23,7 @@ function Discover() {
         setIsLoading(true);
         setError(null);
 
-        const [playlistsData, songsData] = await Promise.all([
-          fetchPlaylists(),
-          fetchSongs(),
-        ]);
-
-        if (Array.isArray(playlistsData)) {
-          setPlaylists(playlistsData);
-        } else {
-          setError("Erro ao carregar playlists");
-        }
+        const [songsData] = await Promise.all([fetchSongs()]);
 
         if (Array.isArray(songsData)) {
           setSongs(songsData);

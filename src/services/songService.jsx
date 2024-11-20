@@ -29,3 +29,48 @@ export const getSong = async (id, token) => {
     throw error;
   }
 };
+
+export const addSong = async (newSongData, token) => {
+  try {
+    const response = await axios.post(`${BASE_URL}/song`, newSongData, {
+      headers: {
+        Authorization: token,
+      },
+    });
+    return response;
+  } catch (error) {
+    console.error("Erro ao adicionar música", error);
+    throw error;
+  }
+};
+
+export const editSong = async (songId, updatedSongData, token) => {
+  try {
+    const response = await axios.patch(
+      `${BASE_URL}/song/${songId}`,
+      updatedSongData,
+      {
+        headers: {
+          Authorization: token,
+        },
+      }
+    );
+    return response;
+  } catch (error) {
+    console.error("Erro ao editar música", error);
+    throw error;
+  }
+};
+
+export const deleteSong = async (songId, token) => {
+  try {
+    await axios.delete(`${BASE_URL}/song/${songId}`, {
+      headers: {
+        Authorization: token,
+      },
+    });
+  } catch (error) {
+    console.error("Erro ao deletar musica", error);
+    throw error;
+  }
+};
