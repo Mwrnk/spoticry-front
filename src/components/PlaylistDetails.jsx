@@ -1,33 +1,57 @@
-import { useState, useEffect, useContext } from "react";
-import axios from "axios";
+import { useState, useEffect, useContext, useCallback } from "react";
 import { UserContext } from "../context/userContext";
-import { BASE_URL, fetchPlaylistTracks, fetchSongs } from "../services/api";
-import { addSongToPlaylist } from "../services/playlistService";
+import { fetchSongs, getSong } from "../services/songService";
+import {
+  fetchPlaylistTracks,
+  addSongToPlaylist,
+  deletePlaylist,
+  removeSongFromPlaylist,
+  fetchUserPlaylists,
+} from "../services/playlistService";
 import SongsList from "./SongsList";
 import PlaylistModal from "./PlaylistModal";
+
 const PlaylistDetails = ({ selectedPlaylist, onClose }) => {
   const [songs, setSongs] = useState([]);
   const [tracks, setTracks] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
   const { userId, token } = useContext(UserContext);
 
+  const fetchSongsList = useCallback(async () => {
+    try {
+      setLoading(true);
+      const data = await fetchSongs();
+      setSongs(data);
+    } catch (error) {
+      console.error("Erro ao buscar músicas", error);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  const fetchPlaylistSongs = useCallback(async () => {
+    try {
+      setLoading(true);
+      const data = await fetchPlaylistTracks(selectedPlaylist._id, token);
+      const songDetailsPromises = data.songs.map((songId) =>
+        getSong(songId, token)
+      );
+      const songDetails = await Promise.all(songDetailsPromises);
+      setTracks(songDetails);
+    } catch (error) {
+      console.error("Erro ao buscar músicas da playlist", error);
+    } finally {
+      setLoading(false);
+    }
+  }, [selectedPlaylist._id, token]);
+
   useEffect(() => {
-    fetchSongsList();
-    fetchPlaylistSongs();
-  }, [userId, selectedPlaylist._id]);
-
-  const fetchSongsList = async () => {
-    const data = await fetchSongs();
-    console.log("songs:", data);
-    setSongs(data);
-  };
-
-  const fetchPlaylistSongs = async () => {
-    const data = await fetchPlaylistTracks(selectedPlaylist._id);
-    console.log("tracks:", data);
-
-    setTracks(data.songs || []);
-  };
+    if (userId && selectedPlaylist._id) {
+      fetchSongsList();
+      fetchPlaylistSongs();
+    }
+  }, [userId, selectedPlaylist._id, fetchSongsList, fetchPlaylistSongs]);
 
   const handleAddToPlaylist = async (song) => {
     try {
@@ -38,21 +62,33 @@ const PlaylistDetails = ({ selectedPlaylist, onClose }) => {
     }
   };
 
+  const handleDelete = async () => {
+    try {
+      const playlistId = selectedPlaylist._id;
+      const response = await deletePlaylist(playlistId, token);
+      if (response.success) {
+        alert("Playlist deletada com sucesso!");
+        onClose(null);
+      }
+    } catch (error) {
+      alert("Erro ao deletar a playlist. Tente novamente.");
+    }
+  };
+
   const handleRemoveFromPlaylist = async (songId) => {
     try {
-      const token = localStorage.getItem("token");
-      await axios.delete(
-        `${BASE_URL}/playlist/${selectedPlaylist._id}/song/${songId}`,
-        {
-          headers: {
-            Authorization: token,
-          },
-        }
-      );
+      await removeSongFromPlaylist(selectedPlaylist._id, songId, token);
       await fetchPlaylistSongs();
     } catch (error) {
-      console.error("Error removing song from playlist", error);
+      console.error("Erro ao remover música da playlist", error);
     }
+  };
+
+  const handleSave = async (updatedPlaylist) => {
+    await fetchPlaylistSongs();
+    selectedPlaylist._name = updatedPlaylist.name;
+    selectedPlaylist._description = updatedPlaylist.description;
+    setIsOpen(false);
   };
 
   return (
@@ -84,7 +120,10 @@ const PlaylistDetails = ({ selectedPlaylist, onClose }) => {
           >
             Edit
           </button>
-          <button className="bg-red-500 text-white px-4 py-2 rounded-lg">
+          <button
+            onClick={handleDelete}
+            className="bg-red-500 text-white px-4 py-2 rounded-lg"
+          >
             Delete
           </button>
         </div>
@@ -92,16 +131,31 @@ const PlaylistDetails = ({ selectedPlaylist, onClose }) => {
       <div className="grid grid-cols-2 gap-4">
         <div>
           <h2>Songs</h2>
-          <SongsList
-            songs={songs}
-            isInPlaylistDetails={true}
-            onAddToPlaylist={handleAddToPlaylist}
-            onDelete={handleRemoveFromPlaylist}
-          />
+          {loading ? (
+            <p>Carregando...</p>
+          ) : (
+            <SongsList
+              songs={songs}
+              isInPlaylistDetails={true}
+              onAddToPlaylist={handleAddToPlaylist}
+              onDelete={handleRemoveFromPlaylist}
+            />
+          )}
         </div>
         <div>
           <h3>Tracks from the Playlist</h3>
-          <SongsList songs={tracks} />
+          {loading ? (
+            <p>Carregando...</p>
+          ) : tracks.length > 0 ? (
+            <SongsList
+              songs={tracks}
+              isInPlaylistDetails={false}
+              onDelete={handleRemoveFromPlaylist}
+              isPlaylistTrack={true}
+            />
+          ) : (
+            <p>Nenhuma música na playlist</p>
+          )}
         </div>
       </div>
       <PlaylistModal
@@ -109,6 +163,7 @@ const PlaylistDetails = ({ selectedPlaylist, onClose }) => {
         onClose={() => setIsOpen(false)}
         isEditing={true}
         playlist={selectedPlaylist}
+        onSave={handleSave}
       />
     </div>
   );

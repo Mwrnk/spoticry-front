@@ -30,6 +30,7 @@ const PlaylistsContainer = ({
         isOpen={isModalOpen}
         onClose={closeModal}
         onCreatePlaylist={handleCreatePlaylist}
+        isEditing={false}
       />
     </div>
   );
