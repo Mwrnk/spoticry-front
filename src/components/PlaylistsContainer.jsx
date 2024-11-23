@@ -1,6 +1,8 @@
 import UserPlaylists from "./UsersPlaylist";
 import PlaylistModal from "./PlaylistModal";
 import add from "../assets/add.svg";
+import SearchBar from "./SearchBar";
+
 const PlaylistsContainer = ({
   playlists,
   covers,
@@ -9,6 +11,8 @@ const PlaylistsContainer = ({
   handleCreatePlaylist,
   openModal,
   onSelect,
+  searchQuery,
+  onSearch,
 }) => {
   return (
     <div className="flex-1 overflow-y-auto p-4">
@@ -20,6 +24,13 @@ const PlaylistsContainer = ({
         >
           <img src={add} alt="add" />
         </button>
+      </div>
+      <div className="flex items-center space-x-4 mb-4">
+        <SearchBar
+          placeholder="Buscar playlists..."
+          value={searchQuery}
+          onSearch={onSearch}
+        />
       </div>
       <UserPlaylists
         playlists={playlists}

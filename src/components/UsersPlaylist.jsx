@@ -4,7 +4,7 @@ function UserPlaylists({ playlists, onSelect }) {
   useEffect(() => {}, [playlists]);
 
   if (!playlists || playlists.length === 0) {
-    return <p>Você ainda não tem playlists.</p>;
+    return <p>Não foram encontradas nenhuma playlist.</p>;
   }
 
   return (

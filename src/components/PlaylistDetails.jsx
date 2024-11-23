@@ -10,6 +10,7 @@ import {
 } from "../services/playlistService";
 import SongsList from "./SongsList";
 import PlaylistModal from "./PlaylistModal";
+import SearchBar from "./SearchBar";
 
 const PlaylistDetails = ({ selectedPlaylist, onClose }) => {
   const [songs, setSongs] = useState([]);
@@ -17,6 +18,7 @@ const PlaylistDetails = ({ selectedPlaylist, onClose }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const { userId, token } = useContext(UserContext);
+  const [searchQuery, setSearchQuery] = useState("");
 
   const fetchSongsList = useCallback(async () => {
     try {
@@ -91,6 +93,14 @@ const PlaylistDetails = ({ selectedPlaylist, onClose }) => {
     setIsOpen(false);
   };
 
+  const filteredSongs = songs.filter((song) =>
+    song?.title?.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  const filteredTracks = tracks.filter((track) =>
+    track?.title?.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
     <div className="flex-1 overflow-y-auto p-4">
       <div className="mb-4">
@@ -128,6 +138,11 @@ const PlaylistDetails = ({ selectedPlaylist, onClose }) => {
           </button>
         </div>
       </div>
+      <SearchBar
+        placeholder="Buscar músicas..."
+        value={searchQuery}
+        onSearch={setSearchQuery}
+      />
       <div className="grid grid-cols-2 gap-4">
         <div>
           <h2>Songs</h2>
@@ -135,7 +150,7 @@ const PlaylistDetails = ({ selectedPlaylist, onClose }) => {
             <p>Carregando...</p>
           ) : (
             <SongsList
-              songs={songs}
+              songs={filteredSongs}
               isInPlaylistDetails={true}
               onAddToPlaylist={handleAddToPlaylist}
               onDelete={handleRemoveFromPlaylist}
@@ -146,9 +161,9 @@ const PlaylistDetails = ({ selectedPlaylist, onClose }) => {
           <h3>Tracks from the Playlist</h3>
           {loading ? (
             <p>Carregando...</p>
-          ) : tracks.length > 0 ? (
+          ) : filteredTracks.length > 0 ? (
             <SongsList
-              songs={tracks}
+              songs={filteredTracks}
               isInPlaylistDetails={false}
               onDelete={handleRemoveFromPlaylist}
               isPlaylistTrack={true}

@@ -5,6 +5,7 @@ import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
 import PlaylistsContainer from "../components/PlaylistsContainer";
 import PlaylistDetails from "../components/PlaylistDetails";
+import SearchBar from "../components/SearchBar";
 
 import { UserContext } from "../context/userContext";
 import { fetchUserPlaylists } from "../services/playlistService";
@@ -15,6 +16,7 @@ function Playlists() {
   const [playlists, setPlaylists] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedPlaylist, setSelectedPlaylist] = useState(null);
+  const [searchQuery, setSearchQuery] = useState("");
 
   const fetchPlaylists = async () => {
     try {
@@ -58,6 +60,14 @@ function Playlists() {
     setIsModalOpen(false);
   };
 
+  const filteredPlaylists = playlists.filter((playlist) =>
+    playlist._name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  const handleSearch = (query) => {
+    setSearchQuery(query);
+  };
+
   return (
     <div className="grid h-screen grid-rows-[auto_1fr_auto]">
       <Header onLogout={handleLogout} />
@@ -65,7 +75,9 @@ function Playlists() {
         <Sidebar />
         {!selectedPlaylist && (
           <PlaylistsContainer
-            playlists={playlists}
+            playlists={filteredPlaylists}
+            searchQuery={searchQuery}
+            onSearch={handleSearch}
             isModalOpen={isModalOpen}
             closeModal={closeModal}
             openModal={openModal}
