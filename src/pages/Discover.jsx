@@ -6,7 +6,6 @@ import Sidebar from "../components/Sidebar";
 import SongsList from "../components/SongsList";
 import Header from "../components/Header";
 import SearchBar from "../components/SearchBar";
-import BottomNavBar from "../components/BottomNavBar";
 import SearchResults from "../components/SearchResults";
 
 function Discover() {
@@ -111,7 +110,6 @@ function Discover() {
           )}
         </div>
       </main>
-      <BottomNavBar playlists={playlists} songs={songs} />
     </div>
   );
 }
