@@ -1,5 +1,5 @@
 // src/components/SearchResults.jsx
-import SongsList from "./SongsList";
+import SongsList from "./Song/SongsList";
 
 function SearchResults({ searchQuery, songs, onClearSearch }) {
   const filteredSongs = songs.filter((song) =>

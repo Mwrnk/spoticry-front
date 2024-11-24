@@ -13,7 +13,7 @@ export const login = async (body, navigate) => {
     if (tokenData) {
       navigate("/home");
     } else {
-      throw new Error("Dado de token invalido");
+      throw new Error("Dado de token inválido");
     }
   } catch (error) {
     console.error(error);
@@ -24,6 +24,7 @@ export const login = async (body, navigate) => {
     }
   }
 };
+
 export const logout = () => {
   localStorage.removeItem("token");
 };

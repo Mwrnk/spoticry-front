@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
-import { UserContext } from "../context/userContext";
-import { savePlaylist } from "../services/playlistService";
+import { UserContext } from "../../context/userContext";
+import { savePlaylist } from "../../services/playlistService";
 
 const PlaylistModal = ({
   isOpen,
@@ -34,7 +34,6 @@ const PlaylistModal = ({
       }
     } catch (error) {
       console.error("Erro ao criar/atualizar playlist:", error);
-      alert("Não foi possível criar/atualizar a playlist. Tente novamente.");
     }
   };
 

@@ -6,51 +6,35 @@ import {
 } from "react-router-dom";
 import Login from "./pages/Login";
 import Home from "./pages/Home";
-import Musics from "./pages/Musics";
+import Songs from "./pages/Songs";
 import Discover from "./pages/Discover";
 import Playlists from "./pages/Playlists";
 import ProtectedRoute from "./components/ProtectedRoute";
+import { UserProvider } from "./context/userContext";
+
 function App() {
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Navigate to="/login" />} />
-        <Route path="/login" element={<Login />} />
-        <Route
-          path="/home"
-          element={
-            <ProtectedRoute>
-              <Home />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/discover"
-          element={
-            <ProtectedRoute>
-              <Discover />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/musics"
-          element={
-            <ProtectedRoute>
-              <Musics />
-            </ProtectedRoute>
-          }
-        />
-
-        <Route
-          path="/playlists"
-          element={
-            <ProtectedRoute>
-              <Playlists />
-            </ProtectedRoute>
-          }
-        ></Route>
-      </Routes>
-    </Router>
+    <UserProvider>
+      <Router>
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route
+            path="/*"
+            element={
+              <ProtectedRoute>
+                <Routes>
+                  <Route path="/home" element={<Home />} />
+                  <Route path="/discover" element={<Discover />} />
+                  <Route path="/songs" element={<Songs />} />
+                  <Route path="/playlists" element={<Playlists />} />
+                  <Route path="*" element={<Navigate to="/home" />} />
+                </Routes>
+              </ProtectedRoute>
+            }
+          />
+        </Routes>
+      </Router>
+    </UserProvider>
   );
 }
 

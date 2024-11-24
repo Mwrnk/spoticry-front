@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
-import home from "../assets/home.svg";
-import search from "../assets/search.svg";
-import library from "../assets/library.svg";
+import home from "../../assets/home.svg";
+import search from "../../assets/search.svg";
+import library from "../../assets/library.svg";
 
 function Sidebar() {
   return (
@@ -22,7 +22,7 @@ function Sidebar() {
           <span>Descobrir</span>
         </Link>
         <Link
-          to="/musics"
+          to="/songs"
           className="flex items-center space-x-3 text-lg text-gray-700 hover:text-gray-900"
         >
           <img src={library} alt="Músicas" className="w-6 h-6" />

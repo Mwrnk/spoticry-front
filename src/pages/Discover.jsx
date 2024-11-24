@@ -2,9 +2,9 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { fetchSongs } from "../services/songService";
 
-import Sidebar from "../components/Sidebar";
-import SongsList from "../components/SongsList";
-import Header from "../components/Header";
+import Sidebar from "../components/Layout/Sidebar";
+import SongsList from "../components/Song/SongsList";
+import Header from "../components/Layout/Header";
 import SearchBar from "../components/SearchBar";
 import SearchResults from "../components/SearchResults";
 

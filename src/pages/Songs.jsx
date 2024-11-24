@@ -1,8 +1,8 @@
 import { useState, useEffect, useContext } from "react";
-import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import { UserContext } from "../context/userContext";
-import { BASE_URL } from "../services/api";
 import {
   fetchSongs,
   addSong,
@@ -10,32 +10,32 @@ import {
   deleteSong,
 } from "../services/songService";
 
-import Header from "../components/Header";
-import Sidebar from "../components/Sidebar";
+import Header from "../components/Layout/Header";
+import Sidebar from "../components/Layout/Sidebar";
 import SearchBar from "../components/SearchBar";
 import SearchResults from "../components/SearchResults";
-import SongsList from "../components/SongsList";
-import MusicModal from "../components/MusicModal";
+import SongsList from "../components/Song/SongsList";
+import MusicModal from "../components/Song/SongModal";
 
 import add from "../assets/add.svg";
-function Musics() {
+function Songs() {
   const { userId, token } = useContext(UserContext);
   const [searchQuery, setSearchQuery] = useState("");
   const [songs, setSongs] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedSong, setSelectedSong] = useState(null);
+  const [isSortEnabled, setIsSortEnabled] = useState(false);
 
   const handleSearch = (query) => setSearchQuery(query);
   const clearSearch = () => setSearchQuery("");
 
   const handleAddMusic = async (newSong) => {
     try {
-      const response = await addSong({ ...newSong, userId }, token);
-      if (response.status === 200) {
-        fetchUserSongs();
-      }
+      await addSong({ ...newSong, userId }, token);
+      await fetchUserSongs();
+      toast.success("Música adicionada com sucesso!");
     } catch (error) {
-      console.error("Erro ao adicionar música", error);
+      toast.error("Erro ao adicionar música");
     }
   };
 
@@ -47,24 +47,34 @@ function Musics() {
           song.id === songId ? { ...song, ...updatedSong } : song
         );
         setSongs(updatedSongs);
+        toast.success("Música editada com sucesso!");
       }
     } catch (error) {
-      console.error("Erro ao editar música", error);
+      toast.error("Erro ao editar música");
     }
   };
 
   const handleDeleteMusic = async (songId) => {
     try {
       await deleteSong(songId, token);
-      fetchUserSongs();
+      await fetchUserSongs();
+      toast.success("Música deletada com sucesso!");
     } catch (error) {
-      console.error("Erro ao deletar musica", error);
+      toast.error("Erro ao deletar música");
     }
   };
 
+  const handleSortToggle = () => {
+    setIsSortEnabled(!isSortEnabled);
+  };
+
+  const sortedSongs = isSortEnabled
+    ? [...songs].sort((a, b) => a.name.localeCompare(b.name))
+    : songs;
+
   useEffect(() => {
     fetchUserSongs();
-  }, [userId]); // Fetch user songs when the userId changes
+  }, [userId]);
 
   const fetchUserSongs = async () => {
     const data = await fetchSongs();
@@ -84,14 +94,24 @@ function Musics() {
             placeholder="Pesquisar em suas músicas..."
             onSearch={handleSearch}
           />
-          <div className="flex items-center justify-start my-4 py-2 space-x-8">
+          <div className="flex items-center justify-between my-4 py-2 space-x-8">
             <h1 className="text-2xl font-bold">Suas músicas</h1>
-            <button
-              className="py-2 px-2 bg-blue-500 text-white rounded-lg"
-              onClick={() => setIsModalOpen(true)}
-            >
-              <img src={add} alt="add" />
-            </button>
+            <div className="flex items-center space-x-4">
+              <label className="flex items-center space-x-2">
+                <input
+                  type="checkbox"
+                  checked={isSortEnabled}
+                  onChange={handleSortToggle}
+                />
+                <span>Ordenar por Nome</span>
+              </label>
+              <button
+                className="py-2 px-2 bg-blue-500 text-white rounded-lg"
+                onClick={() => setIsModalOpen(true)}
+              >
+                <img src={add} alt="add" />
+              </button>
+            </div>
           </div>
 
           {isModalOpen && (
@@ -110,7 +130,7 @@ function Musics() {
           ) : (
             <>
               <SongsList
-                songs={songs}
+                songs={sortedSongs}
                 canEdit={true}
                 onEdit={(song) => setSelectedSong(song)}
                 onDelete={handleDeleteMusic}
@@ -130,8 +150,20 @@ function Musics() {
           )}
         </div>
       </main>
+      <ToastContainer
+        position="bottom-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
     </div>
   );
 }
 
-export default Musics;
+export default Songs;

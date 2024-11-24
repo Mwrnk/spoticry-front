@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-function MusicModal({ isOpen, onClose, onSave, music = {} }) {
+function SongModal({ isOpen, onClose, onSave, music = {} }) {
   const [title, setTitle] = useState(music.title || "");
   const [artist, setArtist] = useState(music.artist || "");
   const [url, setUrl] = useState(music.url || "");
@@ -61,4 +61,4 @@ function MusicModal({ isOpen, onClose, onSave, music = {} }) {
   );
 }
 
-export default MusicModal;
+export default SongModal;

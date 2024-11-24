@@ -1,16 +1,18 @@
 import { useState, useEffect, useContext, useCallback } from "react";
-import { UserContext } from "../context/userContext";
-import { fetchSongs, getSong } from "../services/songService";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { UserContext } from "../../context/userContext";
+import { fetchSongs, getSong } from "../../services/songService";
 import {
   fetchPlaylistTracks,
   addSongToPlaylist,
   deletePlaylist,
   removeSongFromPlaylist,
   fetchUserPlaylists,
-} from "../services/playlistService";
-import SongsList from "./SongsList";
+} from "../../services/playlistService";
+import SongsList from "../Song/SongsList";
 import PlaylistModal from "./PlaylistModal";
-import SearchBar from "./SearchBar";
+import SearchBar from "../SearchBar";
 
 const PlaylistDetails = ({ selectedPlaylist, onClose }) => {
   const [songs, setSongs] = useState([]);
@@ -26,7 +28,7 @@ const PlaylistDetails = ({ selectedPlaylist, onClose }) => {
       const data = await fetchSongs();
       setSongs(data);
     } catch (error) {
-      console.error("Erro ao buscar músicas", error);
+      toast.error("Erro ao buscar músicas");
     } finally {
       setLoading(false);
     }
@@ -42,7 +44,7 @@ const PlaylistDetails = ({ selectedPlaylist, onClose }) => {
       const songDetails = await Promise.all(songDetailsPromises);
       setTracks(songDetails);
     } catch (error) {
-      console.error("Erro ao buscar músicas da playlist", error);
+      toast.error("Erro ao buscar músicas da playlist");
     } finally {
       setLoading(false);
     }
@@ -55,50 +57,75 @@ const PlaylistDetails = ({ selectedPlaylist, onClose }) => {
     }
   }, [userId, selectedPlaylist._id, fetchSongsList, fetchPlaylistSongs]);
 
+  const updatePlaylists = async () => {
+    await fetchUserPlaylists(userId, token);
+  };
+
   const handleAddToPlaylist = async (song) => {
-    try {
-      await addSongToPlaylist(selectedPlaylist._id, song.id, token);
-      await fetchPlaylistSongs();
-    } catch (error) {
-      console.error("Erro ao adicionar música à playlist", error);
-    }
+    toast.promise(
+      addSongToPlaylist(selectedPlaylist._id, song.id, token).then(() => {
+        setTracks((prevTracks) => [...prevTracks, song]);
+        updatePlaylists();
+      }),
+      {
+        pending: "Adicionando música à playlist...",
+        success: "Música adicionada com sucesso!",
+        error: "Erro ao adicionar música à playlist",
+      }
+    );
   };
 
   const handleDelete = async () => {
-    try {
-      const playlistId = selectedPlaylist._id;
-      const response = await deletePlaylist(playlistId, token);
-      if (response.success) {
-        alert("Playlist deletada com sucesso!");
-        onClose(null);
+    toast.promise(
+      deletePlaylist(selectedPlaylist._id, token).then((response) => {
+        if (response.success) {
+          toast.success("Playlist deletada com sucesso!");
+          updatePlaylists();
+          onClose(null);
+        }
+      }),
+      {
+        pending: "Deletando playlist...",
+        success: "Playlist deletada com sucesso!",
+        error: "Erro ao deletar a playlist. Tente novamente.",
       }
-    } catch (error) {
-      alert("Erro ao deletar a playlist. Tente novamente.");
-    }
+    );
   };
 
   const handleRemoveFromPlaylist = async (songId) => {
-    try {
-      await removeSongFromPlaylist(selectedPlaylist._id, songId, token);
-      await fetchPlaylistSongs();
-    } catch (error) {
-      console.error("Erro ao remover música da playlist", error);
-    }
+    toast.promise(
+      removeSongFromPlaylist(selectedPlaylist._id, songId, token).then(() => {
+        setTracks((prevTracks) =>
+          prevTracks.filter((track) => track.id !== songId)
+        );
+        updatePlaylists();
+      }),
+      {
+        pending: "Removendo música da playlist...",
+        success: "Música removida com sucesso!",
+        error: "Erro ao remover música da playlist",
+      }
+    );
   };
 
   const handleSave = async (updatedPlaylist) => {
-    await fetchPlaylistSongs();
-    selectedPlaylist._name = updatedPlaylist.name;
-    selectedPlaylist._description = updatedPlaylist.description;
-    setIsOpen(false);
+    toast.promise(
+      fetchPlaylistSongs().then(() => {
+        selectedPlaylist._name = updatedPlaylist.name;
+        selectedPlaylist._description = updatedPlaylist.description;
+        setIsOpen(false);
+        updatePlaylists();
+      }),
+      {
+        pending: "Salvando alterações na playlist...",
+        success: "Playlist editada com sucesso!",
+        error: "Erro ao editar a playlist",
+      }
+    );
   };
 
   const filteredSongs = songs.filter((song) =>
     song?.title?.toLowerCase().includes(searchQuery.toLowerCase())
-  );
-
-  const filteredTracks = tracks.filter((track) =>
-    track?.title?.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   return (
@@ -161,9 +188,9 @@ const PlaylistDetails = ({ selectedPlaylist, onClose }) => {
           <h3>Tracks from the Playlist</h3>
           {loading ? (
             <p>Carregando...</p>
-          ) : filteredTracks.length > 0 ? (
+          ) : tracks.length > 0 ? (
             <SongsList
-              songs={filteredTracks}
+              songs={tracks}
               isInPlaylistDetails={false}
               onDelete={handleRemoveFromPlaylist}
               isPlaylistTrack={true}
@@ -179,6 +206,18 @@ const PlaylistDetails = ({ selectedPlaylist, onClose }) => {
         isEditing={true}
         playlist={selectedPlaylist}
         onSave={handleSave}
+      />
+      <ToastContainer
+        position="bottom-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
       />
     </div>
   );
