@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 function SongsList({
   songs = [],
   canEdit = false,
@@ -7,6 +9,18 @@ function SongsList({
   onAddToPlaylist = () => {},
   isPlaylistTrack = false,
 }) {
+  const [sortOrder, setSortOrder] = useState("asc");
+
+  const sortedSongs = [...songs].sort((a, b) => {
+    const songA = a.song || a;
+    const songB = b.song || b;
+    if (sortOrder === "asc") {
+      return songA.title.localeCompare(songB.title);
+    } else {
+      return songB.title.localeCompare(songA.title);
+    }
+  });
+
   if (!Array.isArray(songs)) {
     console.error("songs is not an array:", songs);
     return null;
@@ -14,56 +28,64 @@ function SongsList({
   console.log("SongsList songs:", songs);
 
   return (
-    <div className="grid grid-cols-1 gap-4">
-      {songs.map((item, index) => {
-        const song = item.song || item;
-        return (
-          <div
-            key={`${song.id}-${index}`}
-            className="flex flex-col p-4 bg-gray-700 rounded-lg shadow-md"
-          >
-            <h3 className="text-lg text-white">{song.title}</h3>
-            <p className="text-gray-400">{song.artist}</p>
-            <div className="flex flex-row mt-4 border-t border-gray-600">
-              <button className="flex items-center p-4 m-4 text-white bg-blue-500 rounded-lg hover:bg-blue-600">
-                Play
-              </button>
-              {isInPlaylistDetails && (
-                <button
-                  onClick={() => onAddToPlaylist(song)}
-                  className="flex items-center p-4 m-4 text-white bg-green-500 rounded-lg hover:bg-green-600"
-                >
-                  Adicionar
+    <div>
+      <button
+        onClick={() => setSortOrder(sortOrder === "asc" ? "desc" : "asc")}
+        className="mb-4 p-2 bg-gray-500 text-white rounded"
+      >
+        Ordenar {sortOrder === "asc" ? "Descendente" : "Ascendente"}
+      </button>
+      <div className="grid grid-cols-1 gap-4">
+        {sortedSongs.map((item, index) => {
+          const song = item.song || item;
+          return (
+            <div
+              key={`${song.id}-${index}`}
+              className="flex flex-col p-4 bg-gray-700 rounded-lg shadow-md"
+            >
+              <h3 className="text-lg text-white">{song.title}</h3>
+              <p className="text-gray-400">{song.artist}</p>
+              <div className="flex flex-row mt-4 border-t border-gray-600">
+                <button className="flex items-center p-4 m-4 text-white bg-blue-500 rounded-lg hover:bg-blue-600">
+                  Play
                 </button>
-              )}
-              {canEdit && (
-                <>
+                {isInPlaylistDetails && (
+                  <button
+                    onClick={() => onAddToPlaylist(song)}
+                    className="flex items-center p-4 m-4 text-white bg-green-500 rounded-lg hover:bg-green-600"
+                  >
+                    Adicionar
+                  </button>
+                )}
+                {canEdit && (
+                  <>
+                    <button
+                      onClick={() => onDelete(song.id)}
+                      className="flex items-center p-4 m-4 text-white bg-red-500 rounded-lg hover:bg-red-600"
+                    >
+                      Delete
+                    </button>
+                    <button
+                      onClick={() => onEdit(song)}
+                      className="flex items-center p-4 m-4 text-white bg-green-500 rounded-lg hover:bg-green-600"
+                    >
+                      Edit
+                    </button>
+                  </>
+                )}
+                {isPlaylistTrack && (
                   <button
                     onClick={() => onDelete(song.id)}
                     className="flex items-center p-4 m-4 text-white bg-red-500 rounded-lg hover:bg-red-600"
                   >
-                    Delete
+                    Remover
                   </button>
-                  <button
-                    onClick={() => onEdit(song)}
-                    className="flex items-center p-4 m-4 text-white bg-green-500 rounded-lg hover:bg-green-600"
-                  >
-                    Edit
-                  </button>
-                </>
-              )}
-              {isPlaylistTrack && (
-                <button
-                  onClick={() => onDelete(song.id)}
-                  className="flex items-center p-4 m-4 text-white bg-red-500 rounded-lg hover:bg-red-600"
-                >
-                  Remover
-                </button>
-              )}
+                )}
+              </div>
             </div>
-          </div>
-        );
-      })}
+          );
+        })}
+      </div>
     </div>
   );
 }

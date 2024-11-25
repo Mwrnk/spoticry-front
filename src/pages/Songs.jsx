@@ -24,7 +24,6 @@ function Songs() {
   const [songs, setSongs] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedSong, setSelectedSong] = useState(null);
-  const [isSortEnabled, setIsSortEnabled] = useState(false);
 
   const handleSearch = (query) => setSearchQuery(query);
   const clearSearch = () => setSearchQuery("");
@@ -64,14 +63,6 @@ function Songs() {
     }
   };
 
-  const handleSortToggle = () => {
-    setIsSortEnabled(!isSortEnabled);
-  };
-
-  const sortedSongs = isSortEnabled
-    ? [...songs].sort((a, b) => a.name.localeCompare(b.name))
-    : songs;
-
   useEffect(() => {
     fetchUserSongs();
   }, [userId]);
@@ -97,14 +88,6 @@ function Songs() {
           <div className="flex items-center justify-between my-4 py-2 space-x-8">
             <h1 className="text-2xl font-bold">Suas músicas</h1>
             <div className="flex items-center space-x-4">
-              <label className="flex items-center space-x-2">
-                <input
-                  type="checkbox"
-                  checked={isSortEnabled}
-                  onChange={handleSortToggle}
-                />
-                <span>Ordenar por Nome</span>
-              </label>
               <button
                 className="py-2 px-2 bg-blue-500 text-white rounded-lg"
                 onClick={() => setIsModalOpen(true)}
@@ -130,7 +113,7 @@ function Songs() {
           ) : (
             <>
               <SongsList
-                songs={sortedSongs}
+                songs={songs}
                 canEdit={true}
                 onEdit={(song) => setSelectedSong(song)}
                 onDelete={handleDeleteMusic}
