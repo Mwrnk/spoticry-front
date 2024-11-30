@@ -7,6 +7,7 @@ import Header from "../components/Layout/Header";
 import Sidebar from "../components/Layout/Sidebar";
 import PlaylistsContainer from "../components/Playlist/PlaylistsContainer";
 import PlaylistDetails from "../components/Playlist/PlaylistDetails";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 import { UserContext } from "../context/userContext";
 import { fetchUserPlaylists } from "../services/playlistService";
@@ -19,14 +20,18 @@ function Playlists() {
   const [selectedPlaylist, setSelectedPlaylist] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [isSortEnabled, setIsSortEnabled] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const fetchPlaylists = async () => {
+    setLoading(true);
     try {
       const { playlists } = await fetchUserPlaylists(userId, token);
       setPlaylists(playlists);
     } catch (error) {
       toast.error("Erro ao buscar playlists do usuário");
       console.error("Erro ao buscar playlists do usuário:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -99,43 +104,49 @@ function Playlists() {
       <Header onLogout={handleLogout} />
       <main className="flex overflow-hidden">
         <Sidebar />
-        {!selectedPlaylist && (
-          <>
-            <PlaylistsContainer
-              playlists={sortedPlaylists}
-              searchQuery={searchQuery}
-              onSearch={handleSearch}
-              isModalOpen={isModalOpen}
-              closeModal={closeModal}
-              openModal={openModal}
-              handleCreatePlaylist={handleCreatePlaylist}
-              handleSavePlaylist={handleSavePlaylist}
-              onSelect={handlePlaylistSelect}
-              isSortEnabled={isSortEnabled}
-              onSortToggle={handleSortToggle}
-            />
-            <ToastContainer
-              position="bottom-right"
-              autoClose={5000}
-              hideProgressBar={false}
-              newestOnTop={false}
-              closeOnClick
-              rtl={false}
-              pauseOnFocusLoss
-              draggable
-              pauseOnHover
-              theme="dark"
-            />
-          </>
-        )}
-        {selectedPlaylist && (
-          <PlaylistDetails
-            selectedPlaylist={selectedPlaylist}
-            onClose={handleClosePlaylist}
-            token={token}
-          />
-        )}
+        <div className="flex-1 overflow-y-auto p-4">
+          {loading ? (
+            <LoadingSpinner />
+          ) : (
+            <>
+              {!selectedPlaylist && (
+                <PlaylistsContainer
+                  playlists={sortedPlaylists}
+                  searchQuery={searchQuery}
+                  onSearch={handleSearch}
+                  isModalOpen={isModalOpen}
+                  closeModal={closeModal}
+                  openModal={openModal}
+                  handleCreatePlaylist={handleCreatePlaylist}
+                  handleSavePlaylist={handleSavePlaylist}
+                  onSelect={handlePlaylistSelect}
+                  isSortEnabled={isSortEnabled}
+                  onSortToggle={handleSortToggle}
+                />
+              )}
+              {selectedPlaylist && (
+                <PlaylistDetails
+                  selectedPlaylist={selectedPlaylist}
+                  onClose={handleClosePlaylist}
+                  token={token}
+                />
+              )}
+            </>
+          )}
+        </div>
       </main>
+      <ToastContainer
+        position="bottom-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
     </div>
   );
 }

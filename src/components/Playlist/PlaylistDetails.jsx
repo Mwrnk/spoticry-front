@@ -13,6 +13,7 @@ import {
 import SongsList from "../Song/SongsList";
 import PlaylistModal from "./PlaylistModal";
 import SearchBar from "../SearchBar";
+import LoadingSpinner from "../LoadingSpinner";
 
 const PlaylistDetails = ({ selectedPlaylist, onClose }) => {
   const [songs, setSongs] = useState([]);
@@ -95,9 +96,7 @@ const PlaylistDetails = ({ selectedPlaylist, onClose }) => {
   const handleRemoveFromPlaylist = async (songId) => {
     toast.promise(
       removeSongFromPlaylist(selectedPlaylist._id, songId, token).then(() => {
-        setTracks((prevTracks) =>
-          prevTracks.filter((track) => track.id !== songId)
-        );
+        fetchPlaylistSongs();
         updatePlaylists();
       }),
       {
@@ -174,7 +173,7 @@ const PlaylistDetails = ({ selectedPlaylist, onClose }) => {
         <div>
           <h2>Songs</h2>
           {loading ? (
-            <p>Carregando...</p>
+            <LoadingSpinner />
           ) : (
             <SongsList
               songs={filteredSongs}
@@ -187,7 +186,7 @@ const PlaylistDetails = ({ selectedPlaylist, onClose }) => {
         <div>
           <h3>Tracks from the Playlist</h3>
           {loading ? (
-            <p>Carregando...</p>
+            <LoadingSpinner />
           ) : tracks.length > 0 ? (
             <SongsList
               songs={tracks}
