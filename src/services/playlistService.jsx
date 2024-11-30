@@ -131,3 +131,19 @@ export const removeSongFromPlaylist = async (playlistId, songId, token) => {
     throw error;
   }
 };
+export const fetchAllPlaylists = async (token) => {
+  try {
+    const response = await axios.get(`${BASE_URL}/playlist`, {
+      headers: {
+        Authorization: ` ${token}`,
+      },
+    });
+
+    const playlistsData = response.data.playlists;
+
+    return { playlists: playlistsData };
+  } catch (error) {
+    console.error("Erro ao buscar todas as playlists:", error);
+    throw error;
+  }
+};

@@ -5,13 +5,13 @@ function ProtectedRoute({ children }) {
   const token = localStorage.getItem("token");
 
   if (!token) {
-    return <Navigate to="/login" />;
+    return <Navigate to="/" />;
   }
 
   const tokenData = getTokenData(token);
 
   if (!tokenData || tokenData.exp < Date.now() / 1000) {
-    return <Navigate to="/login" />;
+    return <Navigate to="/" />;
   }
 
   return children;

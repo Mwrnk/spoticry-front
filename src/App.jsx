@@ -11,12 +11,14 @@ import Discover from "./pages/Discover";
 import Playlists from "./pages/Playlists";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { UserProvider } from "./context/userContext";
+import LandingPage from "./pages/LandingPage";
 
 function App() {
   return (
     <UserProvider>
       <Router>
         <Routes>
+          <Route path="/" element={<LandingPage />} />
           <Route path="/login" element={<Login />} />
           <Route
             path="/*"
@@ -27,7 +29,7 @@ function App() {
                   <Route path="/discover" element={<Discover />} />
                   <Route path="/songs" element={<Songs />} />
                   <Route path="/playlists" element={<Playlists />} />
-                  <Route path="*" element={<Navigate to="/home" />} />
+                  <Route path="*" element={<Navigate to="/" />} />
                 </Routes>
               </ProtectedRoute>
             }
