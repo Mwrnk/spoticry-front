@@ -12,6 +12,10 @@ export default {
           "40%": { transform: "scaleY(1)" },
         },
       },
+      colors: {
+        "custom-purple": "#5A38FD",
+        "custom-blue": "#82B1FF",
+      },
     },
   },
   plugins: [],

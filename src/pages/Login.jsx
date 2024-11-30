@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { login } from "../services/users";
-import spoticryIcon from "../assets/spoticry.svg";
+import logotipo from "../assets/logotipo.svg";
 import useForm from "../hooks/useForm";
-
+import Art from "../assets/SideArt.png";
 export const LoginForm = () => {
   const [form, onChange, clear] = useForm({ email: "", password: "" });
   const navigate = useNavigate();
@@ -25,15 +25,13 @@ export const LoginForm = () => {
   };
 
   return (
-    <div className="flex w-full h-screen">
+    <div className="flex w-full h-screen bg-zinc-900">
       <div className="w-full flex items-center justify-center lg:w-1/2">
-        <div className="bg-zinc-900 px-10 py-20 rounded-3xl border-2 border-zinc-600">
+        <div className="px-10 py-20">
+          <img src={logotipo} alt="Logotipo" className="mb-8" />
           <h1 className="text-5xl font-semibold">Bem-vindo de volta!</h1>
           <p className="font-medium text-lg text-gray-500 mt-4">
-            Não possui uma conta?{" "}
-            <span className="font-small text-lg text-sky-500">
-              Cadastre-se.
-            </span>
+            Entre com sua conta.
           </p>
           <div className="mt-8">
             <div>
@@ -64,22 +62,28 @@ export const LoginForm = () => {
               <button
                 onClick={onSubmitLogin}
                 type="submit"
-                className="active:scale-[.98] active:duration-75 hover:scale-[1.01] ease-in-out transition-all py-4 rounded-xl bg-gradient-to-r from-sky-500 to-green-500 text-white text-lg font-bold"
+                className="active:scale-[.98] active:duration-75 hover:scale-[1.01] ease-in-out transition-all py-4 rounded-xl bg-gradient-to-r from-custom-blue to-custom-purple text-white text-lg font-bold"
                 disabled={isLoading}
               >
                 {isLoading ? "Carregando..." : "Login"}
+              </button>
+              <button
+                onClick={() => navigate("/")}
+                className="active:scale-[.98] active:duration-75 hover:scale-[1.01] ease-in-out transition-all mt-4 py-4 rounded-xl bg-gray-200 text-gray-700 text-lg font-bold"
+              >
+                Voltar para a página inicial
               </button>
             </div>
           </div>
         </div>
       </div>
-      <div className="hidden relative lg:flex h-full w-1/2 items-center justify-center bg-gray-800">
-        <div className="bg-circle w-60 h-60 bg-gradient-to-tr from-sky-500 to-green-500 rounded-full transition-transform duration-200 ease-out animate-spin"></div>
-        <img
-          src={spoticryIcon}
-          alt="Spoticry Icon"
-          className="icon absolute w-20 h-20 drop-shadow-xl "
-        />
+      <div className="hidden relative lg:flex h-full w-1/2 items-center justify-center">
+        <div className="bg-white p-16 rounded-3xl shadow-lg flex flex-col items-center w-3/4 h-3/4">
+          <p className="text-center text-2xl font-bold font-serif text-gray-700 mb-4">
+            Crie playlists e ouça onde e quando quiser
+          </p>
+          <img src={Art} alt="Spoticry Icon" className="w-full h-full" />
+        </div>
       </div>
     </div>
   );
