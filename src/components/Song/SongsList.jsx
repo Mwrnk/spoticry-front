@@ -9,8 +9,9 @@ function SongsList({
   isInPlaylistDetails = false,
   onAddToPlaylist = () => {},
   isPlaylistTrack = false,
+  sortOrder = "asc",
+  hideSortButton = false,
 }) {
-  const [sortOrder, setSortOrder] = useState("asc");
   const [playingUrl, setPlayingUrl] = useState(null);
 
   const handlePlayPause = (url) => {
@@ -39,12 +40,14 @@ function SongsList({
 
   return (
     <div>
-      <button
-        onClick={() => setSortOrder(sortOrder === "asc" ? "desc" : "asc")}
-        className="mb-4 p-2 bg-gray-500 text-white rounded"
-      >
-        Ordenar {sortOrder === "asc" ? "Descendente" : "Ascendente"}
-      </button>
+      {!hideSortButton && (
+        <button
+          onClick={() => setSortOrder(sortOrder === "asc" ? "desc" : "asc")}
+          className="mb-4 p-2 bg-gray-500 text-white rounded"
+        >
+          Ordenar {sortOrder === "asc" ? "Descendente" : "Ascendente"}
+        </button>
+      )}
       <div className="grid grid-cols-1 gap-4">
         {sortedSongs.map((item, index) => {
           const song = item.song || item;

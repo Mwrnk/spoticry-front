@@ -1,13 +1,21 @@
 // src/components/SearchBar.jsx
-function SearchBar({ placeholder, onSearch, value, onChange }) {
+import search from "../assets/search.svg";
+function SearchBar({ placeholder, onSearch, value }) {
   return (
-    <input
-      type="text"
-      placeholder={placeholder}
-      value={value}
-      className="mx-2 p-2 rounded-lg bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-      onChange={(e) => onSearch(e.target.value)}
-    />
+    <div className="relative flex items-center">
+      <img
+        src={search}
+        alt="search icon"
+        className="absolute left-3 w-6 h-6 text-gray-400"
+      />
+      <input
+        type="text"
+        placeholder={placeholder}
+        value={value}
+        className="pl-12 pr-4 py-3 mx-2 rounded-xl bg-zinc-800 font-thin text-xl text-white focus:outline-none focus:ring-2 focus:ring-custom-blue"
+        onChange={(e) => onSearch(e.target.value)}
+      />
+    </div>
   );
 }
 

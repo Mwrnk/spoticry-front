@@ -7,12 +7,13 @@ import Header from "../components/Layout/Header";
 import SearchBar from "../components/SearchBar";
 import SearchResults from "../components/SearchResults";
 import LoadingSpinner from "../components/LoadingSpinner";
-
+import seta from "../assets/seta.svg";
 function Discover() {
   const [songs, setSongs] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
+  const [sortOrder, setSortOrder] = useState("asc");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -66,6 +67,10 @@ function Discover() {
     }
   };
 
+  const handleSortOrderChange = () => {
+    setSortOrder(sortOrder === "asc" ? "desc" : "asc");
+  };
+
   return (
     <div className="grid h-screen grid-rows-[auto_1fr_auto]">
       <Header onLogout={handleLogout} />
@@ -77,13 +82,29 @@ function Discover() {
             <LoadingSpinner />
           ) : (
             <>
-              <SearchBar
-                onSearch={handleSearch}
-                placeholder={"Pesquisar músicas..."}
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-              />
-              <h1 className="text-4xl p-4 m-8 text-white ">Todas as Músicas</h1>
+              <div className="flex items-center mb-4">
+                <SearchBar
+                  onSearch={handleSearch}
+                  placeholder={"Pesquisar músicas..."}
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+                <button
+                  onClick={handleSortOrderChange}
+                  className="ml-4 p-2 bg-zinc-800 text-white rounded-xl"
+                >
+                  <img
+                    src={seta}
+                    alt="Seta"
+                    className={`h-8 w-8 inline transform transition-transform duration-300 ${
+                      sortOrder === "asc" ? "rotate-180" : ""
+                    }`}
+                  />
+                </button>
+              </div>
+              <h1 className="text-4xl m-4 pb-6 text-white font-bold ">
+                Todas as Músicas
+              </h1>
               {searchQuery ? (
                 <SearchResults
                   searchQuery={searchQuery}
@@ -91,7 +112,7 @@ function Discover() {
                   onClearSearch={clearSearch}
                 />
               ) : (
-                <SongsList songs={songs} />
+                <SongsList songs={songs} sortOrder={sortOrder} hideSortButton />
               )}
             </>
           )}
