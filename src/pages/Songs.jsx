@@ -18,7 +18,9 @@ import SongsList from "../components/Song/SongsList";
 import MusicModal from "../components/Song/SongModal";
 import LoadingSpinner from "../components/LoadingSpinner";
 
-import add from "../assets/add.svg";
+import add from "../assets/addmusic.svg";
+import seta from "../assets/seta.svg";
+
 function Songs() {
   const { userId, token } = useContext(UserContext);
   const [searchQuery, setSearchQuery] = useState("");
@@ -26,6 +28,7 @@ function Songs() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedSong, setSelectedSong] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [sortOrder, setSortOrder] = useState("asc");
 
   const handleSearch = (query) => setSearchQuery(query);
   const clearSearch = () => setSearchQuery("");
@@ -65,6 +68,10 @@ function Songs() {
     }
   };
 
+  const handleSortOrderChange = () => {
+    setSortOrder(sortOrder === "asc" ? "desc" : "asc");
+  };
+
   useEffect(() => {
     fetchUserSongs();
   }, [userId]);
@@ -93,23 +100,37 @@ function Songs() {
             <LoadingSpinner />
           ) : (
             <>
-              <SearchBar
-                searchQuery={searchQuery}
-                placeholder="Pesquisar em suas músicas..."
-                onSearch={handleSearch}
-              />
-              <div className="flex items-center justify-between my-4 py-2 space-x-8">
-                <h1 className="text-2xl font-bold">Suas músicas</h1>
+              <div className="flex items-center justify-between space-x-8">
                 <div className="flex items-center space-x-4">
                   <button
-                    className="py-2 px-2 bg-blue-500 text-white rounded-lg"
+                    className="py-2 px-2 bg-gradient-to-r from-custom-purple to-custom-blue text-white rounded-lg transform transition-transform duration-300 hover:scale-105 active:scale-95"
                     onClick={() => setIsModalOpen(true)}
                   >
-                    <img src={add} alt="add" />
+                    <img src={add} alt="add" className="h-8 w-8" />
+                  </button>
+                  <SearchBar
+                    searchQuery={searchQuery}
+                    placeholder="Pesquisar em suas músicas..."
+                    onSearch={handleSearch}
+                  />
+                  <button
+                    onClick={handleSortOrderChange}
+                    className="ml-4 p-2 bg-zinc-800 text-white rounded-xl transform transition-transform duration-300 hover:scale-105 active:scale-95"
+                  >
+                    <img
+                      src={seta}
+                      alt="Seta"
+                      className={`h-8 w-8 inline transform transition-transform duration-300 ${
+                        sortOrder === "asc" ? "rotate-180" : ""
+                      }`}
+                    />
                   </button>
                 </div>
               </div>
 
+              <h1 className="text-4xl m-4 pb-6 text-white font-bold">
+                Suas Músicas
+              </h1>
               {isModalOpen && (
                 <MusicModal
                   isOpen={isModalOpen}
@@ -131,6 +152,8 @@ function Songs() {
                     onEdit={(song) => setSelectedSong(song)}
                     onDelete={handleDeleteMusic}
                     isInPlaylistDetails={false}
+                    sortOrder={sortOrder}
+                    hideSortButton
                   />
                   {selectedSong && (
                     <MusicModal
