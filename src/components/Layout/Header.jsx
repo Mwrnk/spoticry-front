@@ -1,4 +1,4 @@
-import logo from "../../assets/logo.svg";
+import logotipo from "../../assets/logotipo.svg";
 import user from "../../assets/user.svg";
 import { logout as logoutUser } from "../../services/users";
 import { useNavigate } from "react-router-dom";
@@ -20,20 +20,20 @@ function Header() {
       <meta name="keywords" content="music, streaming, playlist, spoticry" />
       <meta name="author" content="Spoticry" />
       <header
-        className="bg-gray-800 p-4 flex justify-between items-center"
+        className="bg-zinc-800 p-4 flex justify-between items-center rounded-lg m-4"
         role="banner"
       >
-        <div className="flex items-center">
+        <div className="flex items-center ">
           <img
-            src={logo}
+            src={logotipo}
             alt="Logo"
-            className="h-8"
+            className="h-16 "
             aria-label="Spoticry Logo"
           />
         </div>
         <div className="flex items-center space-x-4">
           <button
-            className="bg-red-500 text-white px-4 py-2 rounded"
+            className="bg-zinc-500 text-white px-4 py-2 rounded"
             title="Logout"
             onClick={handleLogout}
             aria-label="Logout"
@@ -43,7 +43,7 @@ function Header() {
           <img
             src={user}
             alt="User"
-            className="h-8"
+            className="h-16"
             aria-label="User Profile"
           />
         </div>
