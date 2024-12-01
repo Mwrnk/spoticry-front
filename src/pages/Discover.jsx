@@ -9,7 +9,6 @@ import SearchResults from "../components/SearchResults";
 import LoadingSpinner from "../components/LoadingSpinner";
 
 function Discover() {
-  const [playlists, setPlaylists] = useState([]);
   const [songs, setSongs] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
