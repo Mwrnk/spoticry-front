@@ -22,6 +22,7 @@ function Playlists() {
   const [isSortEnabled, setIsSortEnabled] = useState(false);
   const [loading, setLoading] = useState(false);
 
+  // Função para buscar as playlists do usuário
   const fetchPlaylists = async () => {
     setLoading(true);
     try {
@@ -35,26 +36,31 @@ function Playlists() {
     }
   };
 
+  // Função para selecionar uma playlist
   const handlePlaylistSelect = (playlist) => {
     setSelectedPlaylist(playlist);
   };
 
+  // Função para fechar a visualização de uma playlist
   const handleClosePlaylist = () => {
     setSelectedPlaylist(null);
     fetchPlaylists();
   };
 
+  // Efeito para buscar playlists quando userId ou token mudarem
   useEffect(() => {
     if (userId && token) {
       fetchPlaylists();
     }
   }, [userId, token]);
 
+  // Função para logout
   const handleLogout = () => {
     localStorage.removeItem("token");
     navigate("/login");
   };
 
+  // Funções para abrir e fechar o modal
   const openModal = () => {
     setIsModalOpen(true);
   };
@@ -63,6 +69,7 @@ function Playlists() {
     setIsModalOpen(false);
   };
 
+  // Função para criar uma nova playlist
   const handleCreatePlaylist = async () => {
     try {
       await fetchPlaylists();
@@ -73,6 +80,7 @@ function Playlists() {
     }
   };
 
+  // Função para salvar uma playlist
   const handleSavePlaylist = async () => {
     try {
       await fetchPlaylists();
@@ -83,18 +91,22 @@ function Playlists() {
     }
   };
 
+  // Filtra as playlists com base na query de busca
   const filteredPlaylists = playlists.filter((playlist) =>
     playlist._name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
+  // Função para lidar com a busca
   const handleSearch = (query) => {
     setSearchQuery(query);
   };
 
+  // Função para alternar a ordenação das playlists
   const handleSortToggle = () => {
     setIsSortEnabled(!isSortEnabled);
   };
 
+  // Ordena as playlists se a ordenação estiver habilitada
   const sortedPlaylists = isSortEnabled
     ? [...filteredPlaylists].sort((a, b) => a._name.localeCompare(b._name))
     : filteredPlaylists;

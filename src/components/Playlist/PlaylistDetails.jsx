@@ -26,6 +26,7 @@ const PlaylistDetails = ({ selectedPlaylist, onClose }) => {
   const { userId, token } = useContext(UserContext);
   const [searchQuery, setSearchQuery] = useState("");
 
+  // Função para buscar a lista de músicas
   const fetchSongsList = useCallback(async () => {
     try {
       setLoading(true);
@@ -38,6 +39,7 @@ const PlaylistDetails = ({ selectedPlaylist, onClose }) => {
     }
   }, []);
 
+  // Função para buscar as músicas da playlist
   const fetchPlaylistSongs = useCallback(async () => {
     try {
       setLoading(true);
@@ -54,6 +56,7 @@ const PlaylistDetails = ({ selectedPlaylist, onClose }) => {
     }
   }, [selectedPlaylist._id, token]);
 
+  // Efeito para buscar músicas e músicas da playlist quando userId ou selectedPlaylist._id mudarem
   useEffect(() => {
     if (userId && selectedPlaylist._id) {
       fetchSongsList();
@@ -61,10 +64,12 @@ const PlaylistDetails = ({ selectedPlaylist, onClose }) => {
     }
   }, [userId, selectedPlaylist._id, fetchSongsList, fetchPlaylistSongs]);
 
+  // Função para atualizar as playlists do usuário
   const updatePlaylists = async () => {
     await fetchUserPlaylists(userId, token);
   };
 
+  // Função para adicionar uma música à playlist
   const handleAddToPlaylist = async (song) => {
     toast.promise(
       addSongToPlaylist(selectedPlaylist._id, song.id, token).then(() => {
@@ -79,6 +84,7 @@ const PlaylistDetails = ({ selectedPlaylist, onClose }) => {
     );
   };
 
+  // Função para deletar a playlist
   const handleDelete = async () => {
     toast.promise(
       deletePlaylist(selectedPlaylist._id, token).then((response) => {
@@ -96,6 +102,7 @@ const PlaylistDetails = ({ selectedPlaylist, onClose }) => {
     );
   };
 
+  // Função para remover uma música da playlist
   const handleRemoveFromPlaylist = async (songId) => {
     toast.promise(
       removeSongFromPlaylist(selectedPlaylist._id, songId, token).then(() => {
@@ -110,6 +117,7 @@ const PlaylistDetails = ({ selectedPlaylist, onClose }) => {
     );
   };
 
+  // Função para salvar as alterações na playlist
   const handleSave = async (updatedPlaylist) => {
     toast.promise(
       fetchPlaylistSongs().then(() => {
@@ -126,6 +134,7 @@ const PlaylistDetails = ({ selectedPlaylist, onClose }) => {
     );
   };
 
+  // Filtra as músicas com base na query de busca
   const filteredSongs = songs.filter((song) =>
     song?.title?.toLowerCase().includes(searchQuery.toLowerCase())
   );

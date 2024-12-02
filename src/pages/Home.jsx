@@ -14,11 +14,9 @@ function Home() {
     const token = localStorage.getItem("token");
     fetchSongs(token).then((data) => {
       setSongs(data);
-      console.log("Songs:", data);
     });
     fetchPlaylists(token).then((data) => {
       setPlaylists(data);
-      console.log("Playlists:", data);
     });
   }, []);
 

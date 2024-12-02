@@ -18,6 +18,7 @@ function SongsList({
 }) {
   const [playingUrl, setPlayingUrl] = useState(null);
 
+  // Função para alternar entre tocar e pausar a música
   const handlePlayPause = (url) => {
     if (playingUrl === url) {
       setPlayingUrl(null);
@@ -26,6 +27,7 @@ function SongsList({
     }
   };
 
+  // Ordena as músicas com base no título e na ordem especificada
   const sortedSongs = [...songs].sort((a, b) => {
     const songA = a.song || a;
     const songB = b.song || b;
@@ -36,11 +38,10 @@ function SongsList({
     }
   });
 
+  // Verifica se a lista de músicas é um array válido
   if (!Array.isArray(songs)) {
-    console.error("songs is not an array:", songs);
     return null;
   }
-  console.log("SongsList songs:", songs);
 
   return (
     <div>
