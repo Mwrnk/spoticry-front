@@ -27,17 +27,17 @@ function Home() {
       <Header />
       <main className="flex overflow-hidden">
         <Sidebar />
-        <div className="flex-1 overflow-y-auto p-4">
-          <h2 className="text-2xl font-semibold text-gray-200 mb-4">
-            Discover new music
+        <div className="flex-1 overflow-y-auto p-4 space-y-8 pl-8 pr-8">
+          <h2 className="text-4xl font-bold text-gray-200 mb-4">
+            Descubra novas músicas
           </h2>
           <Carousel items={songs} type="song" />
-          <h2 className="text-2xl font-semibold text-gray-200 mb-4">
-            Recently played
+          <h2 className="text-4xl font-bold text-gray-200 mb-4">
+            Tocadas recentemente
           </h2>
           <Carousel items={songs} type="song" />
-          <h2 className="text-2xl font-semibold text-gray-200 mb-4">
-            Trending Playlists
+          <h2 className="text-4xl font-bold text-gray-200 mb-4">
+            Playlists em tendência
           </h2>
           <PlaylistCarousel playlists={playlists} />
         </div>
