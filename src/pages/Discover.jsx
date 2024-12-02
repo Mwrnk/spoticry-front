@@ -91,7 +91,7 @@ function Discover() {
                 />
                 <button
                   onClick={handleSortOrderChange}
-                  className="ml-4 p-2 bg-zinc-800 text-white rounded-xl"
+                  className="ml-4 p-2 bg-zinc-800 text-white rounded-xl transform transition-transform duration-300 hover:scale-105 active:scale-95"
                 >
                   <img
                     src={seta}

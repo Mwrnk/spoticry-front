@@ -5,6 +5,7 @@ import pause from "../../assets/pause_circle.svg";
 import remove from "../../assets/remove.svg";
 import edit from "../../assets/edit.svg";
 import add from "../../assets/add.svg";
+import close from "../../assets/close.svg";
 function SongsList({
   songs = [],
   canEdit = false,
@@ -44,14 +45,6 @@ function SongsList({
 
   return (
     <div>
-      {!hideSortButton && (
-        <button
-          onClick={() => setSortOrder(sortOrder === "asc" ? "desc" : "asc")}
-          className="mb-4 p-2 bg-gray-500 text-white rounded"
-        >
-          Ordenar {sortOrder === "asc" ? "Descendente" : "Ascendente"}
-        </button>
-      )}
       <div className="grid grid-cols-1 gap-4 w-full">
         {sortedSongs.map((item, index) => {
           const song = item.song || item;
@@ -86,13 +79,13 @@ function SongsList({
                   {canEdit && (
                     <>
                       <button
-                        className="py-2 px-3 text-white rounded-lg transform transition-transform duration-300 hover:bg-yellow-600 hover:scale-105 flex items-center"
+                        className="py-2 px-3 text-white rounded-lg transform transition-all duration-300 hover:scale-105 hover:bg-zinc-600 flex items-center"
                         onClick={() => onEdit(song)}
                       >
                         <img src={edit} alt="Edit" className="h-6 w-6" />
                       </button>
                       <button
-                        className="py-2 px-3 text-white rounded-lg transform transition-transform duration-300 hover:bg-red-600 hover:scale-105 flex items-center"
+                        className="py-2 px-3 text-white rounded-lg transform transition-all duration-300 hover:scale-105 hover:bg-zinc-600 flex items-center"
                         onClick={() => onDelete(song.id)}
                       >
                         <img src={remove} alt="Remove" className="h-6 w-6" />
@@ -102,23 +95,21 @@ function SongsList({
                   {isInPlaylistDetails && (
                     <button
                       onClick={() => onAddToPlaylist(song)}
-                      className="p-2"
+                      className="p-2 rounded-lg transform transition-all duration-300 hover:scale-105 hover:bg-zinc-600"
                     >
                       <img src={add} alt="Add" />
                     </button>
                   )}
+                  {isPlaylistTrack && (
+                    <button
+                      onClick={() => onDelete(song.id)}
+                      className="p-2 rounded-lg transform transition-all duration-300 hover:scale-105 hover:bg-zinc-600"
+                    >
+                      <img src={close} alt="Remover" />
+                    </button>
+                  )}
                 </div>
               </div>
-              {isPlaylistTrack && (
-                <div className="flex flex-row mt-4 border-t border-gray-600">
-                  <button
-                    onClick={() => onDelete(song.id)}
-                    className="flex items-center p-4 m-4 text-white bg-red-500 rounded-lg hover:bg-red-600"
-                  >
-                    Remover
-                  </button>
-                </div>
-              )}
               <SoundPlayer url={song.url} playing={playingUrl === song.url} />
             </div>
           );

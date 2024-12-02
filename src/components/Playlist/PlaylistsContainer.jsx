@@ -2,6 +2,7 @@ import UserPlaylists from "./UsersPlaylist";
 import PlaylistModal from "./PlaylistModal";
 import add from "../../assets/add.svg";
 import SearchBar from "../../components/SearchBar";
+import seta from "../../assets/seta.svg";
 
 const PlaylistsContainer = ({
   playlists,
@@ -18,35 +19,42 @@ const PlaylistsContainer = ({
   onSortChange,
   isSortEnabled,
   onSortToggle,
+  sortOrder,
+  handleSortOrderChange,
 }) => {
   return (
-    <div className="flex-1 overflow-y-auto p-4">
-      <div className="flex items-center justify-between my-4 py-2 space-x-8">
-        <h1 className="text-2xl font-bold">Suas Playlists</h1>
-        <div className="flex items-center space-x-4">
-          <label className="flex items-center space-x-2">
-            <input
-              type="checkbox"
-              checked={isSortEnabled}
-              onChange={onSortToggle}
-            />
-            <span>Ordenar por Nome</span>
-          </label>
-          <button
-            className="py-2 px-2 bg-blue-500 text-white rounded-lg"
-            onClick={openModal}
-          >
-            <img src={add} alt="add" />
-          </button>
-        </div>
-      </div>
-      <div className="flex items-center space-x-4 mb-4">
+    <div className="flex-1 overflow-y-auto">
+      <div className="flex items-center mb-4">
         <SearchBar
           placeholder="Buscar playlists..."
           value={searchQuery}
           onSearch={onSearch}
         />
+        <button
+          onClick={onSortToggle}
+          className="ml-4 p-2 bg-zinc-800 text-white rounded-xl transform transition-transform duration-300 hover:scale-105 active:scale-95"
+        >
+          <img
+            src={seta}
+            alt="Checkbox"
+            className={`h-8 w-8 inline transform transition-transform duration-300 ${
+              isSortEnabled ? "rotate-180" : ""
+            }`}
+          />
+        </button>
+
+        <button
+          className="ml-4 p-2 bg-gradient-to-br from-custom-blue to-custom-purple text-white rounded-lg transform transition-all duration-300 hover:scale-105"
+          onClick={openModal}
+        >
+          <img
+            src={add}
+            alt="add"
+            className="h-8 w-8 inline transform transition-transform duration-300"
+          />
+        </button>
       </div>
+      <h1 className="text-4xl m-4 pb-6 text-white font-bold">Suas Playlists</h1>
       <UserPlaylists
         playlists={playlists}
         covers={covers}

@@ -102,15 +102,9 @@ function Songs() {
             <>
               <div className="flex items-center justify-between space-x-8">
                 <div className="flex items-center space-x-4">
-                  <button
-                    className="py-2 px-2 bg-gradient-to-r from-custom-purple to-custom-blue text-white rounded-lg transform transition-transform duration-300 hover:scale-105 active:scale-95"
-                    onClick={() => setIsModalOpen(true)}
-                  >
-                    <img src={add} alt="add" className="h-8 w-8" />
-                  </button>
                   <SearchBar
                     searchQuery={searchQuery}
-                    placeholder="Pesquisar em suas músicas..."
+                    placeholder="Busque suas músicas..."
                     onSearch={handleSearch}
                   />
                   <button
@@ -124,6 +118,12 @@ function Songs() {
                         sortOrder === "asc" ? "rotate-180" : ""
                       }`}
                     />
+                  </button>
+                  <button
+                    className="py-2 px-2 bg-gradient-to-br from-custom-blue to-custom-purple text-white rounded-lg transform transition-transform duration-300 hover:scale-105 active:scale-95"
+                    onClick={() => setIsModalOpen(true)}
+                  >
+                    <img src={add} alt="add" className="h-8 w-8" />
                   </button>
                 </div>
               </div>

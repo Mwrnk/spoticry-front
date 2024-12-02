@@ -14,6 +14,9 @@ import SongsList from "../Song/SongsList";
 import PlaylistModal from "./PlaylistModal";
 import SearchBar from "../SearchBar";
 import LoadingSpinner from "../LoadingSpinner";
+import edit from "../../assets/edit.svg";
+import remove from "../../assets/remove.svg";
+import back from "../../assets/back.svg";
 
 const PlaylistDetails = ({ selectedPlaylist, onClose }) => {
   const [songs, setSongs] = useState([]);
@@ -132,46 +135,49 @@ const PlaylistDetails = ({ selectedPlaylist, onClose }) => {
       <div className="mb-4">
         <button
           onClick={() => onClose(null)}
-          className="bg-blue-500 text-white px-4 py-2 rounded-lg"
+          className="text-white px-4 py-2 rounded-lg transform transition-all duration-300 hover:scale-105 hover:bg-zinc-600 flex items-center"
         >
-          Back
+          <img src={back} alt="Voltar" className="h-8 w-8" />
         </button>
       </div>
-      <div className="flex items-center space-x-4 mb-4">
+      <div className="flex items-center space-x-4 mb-4 p-4 bg-gradient-to-t from-zinc-800 to-zinc-700 rounded-lg shadow-md">
         <img
-          src={"https://placehold.co/32x32"}
+          src={"https://placehold.co/64x64"}
           alt="Playlist Cover"
-          className="w-32 h-32 rounded-lg"
+          className="w-64 h-64 rounded-lg shadow-2xl"
         />
-        <div className="space-y-2">
-          <p className="text-sm text-gray-500">
+        <div className="flex-grow space-y-2">
+          <p className="text-lg font-semibold text-white">
             {selectedPlaylist._description}
           </p>
-          <h2 className="text-3xl font-bold">{selectedPlaylist._name}</h2>
+          <h2 className="text-8xl font-bold">{selectedPlaylist._name}</h2>
         </div>
-        <div className="flex flex-col items-center space-y-2 m-4">
+        <div className="flex flex-col items-center space-y-4 m-4">
           <button
             onClick={() => setIsOpen(true)}
-            className="bg-green-600 text-white px-4 py-2 rounded-lg"
+            className="py-2 px-3 text-white rounded-lg transform transition-all duration-300 hover:scale-105 hover:bg-zinc-600 flex items-center"
           >
-            Edit
+            <img src={edit} alt="Edit" className="h-6 w-6" />
           </button>
           <button
             onClick={handleDelete}
-            className="bg-red-500 text-white px-4 py-2 rounded-lg"
+            className="py-2 px-3 text-white rounded-lg transform transition-all duration-300 hover:scale-105 hover:bg-zinc-600 flex items-center"
           >
-            Delete
+            <img src={remove} alt="Remove" className="h-6 w-6" />
           </button>
         </div>
       </div>
+      <h2 className="text-2xl font-bold mb-4">
+        Vamos incrementar sua playlist
+      </h2>
       <SearchBar
         placeholder="Buscar músicas..."
         value={searchQuery}
         onSearch={setSearchQuery}
       />
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-2 gap-4 my-6">
         <div>
-          <h2>Songs</h2>
+          <h2 className="text-white font-bold text-lg">Músicas</h2>
           {loading ? (
             <LoadingSpinner />
           ) : (
@@ -184,7 +190,7 @@ const PlaylistDetails = ({ selectedPlaylist, onClose }) => {
           )}
         </div>
         <div>
-          <h3>Tracks from the Playlist</h3>
+          <h3 className="text-white font-bold text-lg">Faixas da Playlist</h3>
           {loading ? (
             <LoadingSpinner />
           ) : tracks.length > 0 ? (
@@ -195,7 +201,9 @@ const PlaylistDetails = ({ selectedPlaylist, onClose }) => {
               isPlaylistTrack={true}
             />
           ) : (
-            <p>Nenhuma música na playlist</p>
+            <p className="text-gray-300 text-lg font-thin ">
+              Nenhuma música na playlist
+            </p>
           )}
         </div>
       </div>
