@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import logo from "../assets/logotipo.svg";
-import dvd from "../assets/dvd.svg";
 
 function LandingPage() {
   return (
@@ -19,9 +18,7 @@ function LandingPage() {
         <button className="mt-6 bg-green-500 text-white px-6 py-3 rounded">
           Tente agora
         </button>
-        <div className="mt-12 animate-spin-slow">
-          <img src={dvd} alt="dvd" />
-        </div>
+        <div className="mt-12 animate-spin-slow"></div>
       </main>
     </div>
   );
