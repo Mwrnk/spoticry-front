@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-function SongModal({ isOpen, onClose, onSave, music = {} }) {
+function SongModal({ isOpen, onClose, onSave, music = {}, className = "" }) {
   const [title, setTitle] = useState(music.title || "");
   const [artist, setArtist] = useState(music.artist || "");
   const [url, setUrl] = useState(music.url || "");
@@ -14,33 +14,46 @@ function SongModal({ isOpen, onClose, onSave, music = {} }) {
   if (!isOpen) return null; // Não renderiza o modal se não estiver aberto
 
   return (
-    <div className="fixed inset-0 bg-zinc-900 bg-opacity-75 flex items-center justify-center drop-shadow-2xl">
+    <div
+      className={`fixed inset-0 bg-zinc-900 bg-opacity-75 flex items-center justify-center drop-shadow-2xl ${className}`}
+    >
       <div className="bg-zinc-800 p-6 rounded-lg shadow-lg w-80">
         <h2 className="text-2xl font-semibold mb-4">
           {isEditing ? "Editar Música" : "Adicionar Música"}
         </h2>
+        <label className="block text-sm font-medium text-gray-300 mb-1">
+          Título
+        </label>
         <input
           type="text"
           placeholder="Título"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          className="w-full p-2 mb-2  rounded-lg bg-zinc-700"
+          className="w-full p-2 mb-4 rounded-lg bg-zinc-700 text-white"
         />
+        <label className="block text-sm font-medium text-gray-300 mb-1">
+          Artista
+        </label>
         <input
           type="text"
           placeholder="Artista"
           value={artist}
           onChange={(e) => setArtist(e.target.value)}
-          className="w-full p-2 mb-2  rounded-lg bg-zinc-700"
+          className="w-full p-2 mb-4 rounded-lg bg-zinc-700 text-white"
         />
         {!isEditing && (
-          <input
-            type="text"
-            placeholder="URL"
-            value={url}
-            onChange={(e) => setUrl(e.target.value)}
-            className="w-full p-2 mb-4  rounded-lg bg-zinc-700"
-          />
+          <>
+            <label className="block text-sm font-medium text-gray-300 mb-1">
+              URL
+            </label>
+            <input
+              type="text"
+              placeholder="URL"
+              value={url}
+              onChange={(e) => setUrl(e.target.value)}
+              className="w-full p-2 mb-4 rounded-lg bg-zinc-700 text-white"
+            />
+          </>
         )}
         <div className="flex justify-end">
           <button

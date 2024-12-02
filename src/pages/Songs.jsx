@@ -136,6 +136,7 @@ function Songs() {
                   isOpen={isModalOpen}
                   onClose={() => setIsModalOpen(false)}
                   onSave={handleAddMusic}
+                  className="z-50"
                 />
               )}
               {searchQuery ? (
@@ -163,6 +164,7 @@ function Songs() {
                         handleEditMusic(selectedSong.id, updatedSong)
                       }
                       music={selectedSong}
+                      className="z-50"
                     />
                   )}
                 </>

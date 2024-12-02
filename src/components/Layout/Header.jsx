@@ -1,5 +1,6 @@
 import logotipo from "../../assets/logotipo.svg";
 import user from "../../assets/user.svg";
+import logout from "../../assets/logout.svg";
 import { logout as logoutUser } from "../../services/users";
 import { useNavigate } from "react-router-dom";
 
@@ -33,12 +34,12 @@ function Header() {
         </div>
         <div className="flex items-center space-x-4">
           <button
-            className="bg-zinc-500 text-white px-4 py-2 rounded"
+            className="bg-zinc-600 text-white px-4 py-2 rounded transition duration-300 ease-in-out transform hover:bg-zinc-500 hover:scale-105"
             title="Logout"
             onClick={handleLogout}
             aria-label="Logout"
           >
-            Logout
+            <img src={logout} alt="Logout" className="h-6" />
           </button>
           <img
             src={user}

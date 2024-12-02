@@ -15,7 +15,6 @@ function SongsList({
   onAddToPlaylist = () => {},
   isPlaylistTrack = false,
   sortOrder = "asc",
-  hideSortButton = false,
 }) {
   const [playingUrl, setPlayingUrl] = useState(null);
 
