@@ -29,10 +29,17 @@ const PlaylistsContainer = ({
           placeholder="Buscar playlists..."
           value={searchQuery}
           onSearch={onSearch}
+          aria-label="Barra de busca"
         />
         <button
           onClick={onSortToggle}
           className="ml-4 p-2 bg-zinc-800 text-white rounded-xl transform transition-transform duration-300 hover:scale-105 active:scale-95"
+          aria-label={`Ordenar playlists em ordem ${
+            isSortEnabled ? "decrescente" : "crescente"
+          }`}
+          title={`Ordenar playlists em ordem ${
+            isSortEnabled ? "decrescente" : "crescente"
+          }`}
         >
           <img
             src={seta}
@@ -46,6 +53,8 @@ const PlaylistsContainer = ({
         <button
           className="ml-4 p-2 bg-gradient-to-br from-custom-blue to-custom-purple text-white rounded-lg transform transition-all duration-300 hover:scale-105"
           onClick={openModal}
+          aria-label="Adicionar nova playlist"
+          title="Adicionar nova playlist"
         >
           <img
             src={add}
@@ -59,6 +68,7 @@ const PlaylistsContainer = ({
         playlists={playlists}
         covers={covers}
         onSelect={onSelect}
+        aria-label="Lista de playlists"
       />
       <PlaylistModal
         isOpen={isModalOpen}
@@ -66,6 +76,7 @@ const PlaylistsContainer = ({
         onCreatePlaylist={handleCreatePlaylist}
         isEditing={false}
         onSave={handleSavePlaylist}
+        aria-label="Modal de playlist"
       />
     </div>
   );

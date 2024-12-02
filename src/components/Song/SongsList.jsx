@@ -56,6 +56,12 @@ function SongsList({
                 <button
                   onClick={() => handlePlayPause(song.url)}
                   className="flex items-center m-4 text-white rounded-lg transform transition-transform duration-300 hover:scale-105 active:scale-95"
+                  aria-label={
+                    playingUrl === song.url ? "Pausar música" : "Tocar música"
+                  }
+                  title={
+                    playingUrl === song.url ? "Pausar música" : "Tocar música"
+                  }
                 >
                   <img
                     className="w-12 h-12"
@@ -65,7 +71,7 @@ function SongsList({
                 </button>
                 <img
                   src="https://placehold.co/128x128"
-                  alt="Album cover"
+                  alt="Capa do álbum"
                   className="mr-4 rounded-lg shadow-lg"
                 />
                 <div className="flex-grow">
@@ -80,12 +86,16 @@ function SongsList({
                       <button
                         className="py-2 px-3 text-white rounded-lg transform transition-all duration-300 hover:scale-105 hover:bg-zinc-600 flex items-center"
                         onClick={() => onEdit(song)}
+                        aria-label="Editar música"
+                        title="Editar música"
                       >
                         <img src={edit} alt="Edit" className="h-6 w-6" />
                       </button>
                       <button
                         className="py-2 px-3 text-white rounded-lg transform transition-all duration-300 hover:scale-105 hover:bg-zinc-600 flex items-center"
                         onClick={() => onDelete(song.id)}
+                        aria-label="Remover música"
+                        title="Remover música"
                       >
                         <img src={remove} alt="Remove" className="h-6 w-6" />
                       </button>
@@ -95,6 +105,8 @@ function SongsList({
                     <button
                       onClick={() => onAddToPlaylist(song)}
                       className="p-2 rounded-lg transform transition-all duration-300 hover:scale-105 hover:bg-zinc-600"
+                      aria-label="Adicionar à playlist"
+                      title="Adicionar à playlist"
                     >
                       <img src={add} alt="Add" />
                     </button>
@@ -103,6 +115,8 @@ function SongsList({
                     <button
                       onClick={() => onDelete(song.id)}
                       className="p-2 rounded-lg transform transition-all duration-300 hover:scale-105 hover:bg-zinc-600"
+                      aria-label="Remover da playlist"
+                      title="Remover da playlist"
                     >
                       <img src={close} alt="Remover" />
                     </button>

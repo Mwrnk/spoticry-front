@@ -122,6 +122,7 @@ function Playlists() {
                   onSelect={handlePlaylistSelect}
                   isSortEnabled={isSortEnabled}
                   onSortToggle={handleSortToggle}
+                  aria-label="Contêiner de playlists"
                 />
               )}
               {selectedPlaylist && (
@@ -129,6 +130,7 @@ function Playlists() {
                   selectedPlaylist={selectedPlaylist}
                   onClose={handleClosePlaylist}
                   token={token}
+                  aria-label="Detalhes da playlist"
                 />
               )}
             </>
@@ -146,6 +148,7 @@ function Playlists() {
         draggable
         pauseOnHover
         theme="dark"
+        aria-live="polite"
       />
     </div>
   );

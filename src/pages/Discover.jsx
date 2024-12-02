@@ -88,10 +88,17 @@ function Discover() {
                   placeholder={"Pesquisar músicas..."}
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
+                  aria-label="Barra de busca"
                 />
                 <button
                   onClick={handleSortOrderChange}
                   className="ml-4 p-2 bg-zinc-800 text-white rounded-xl transform transition-transform duration-300 hover:scale-105 active:scale-95"
+                  aria-label={`Ordenar músicas em ordem ${
+                    sortOrder === "asc" ? "decrescente" : "crescente"
+                  }`}
+                  title={`Ordenar músicas em ordem ${
+                    sortOrder === "asc" ? "decrescente" : "crescente"
+                  }`}
                 >
                   <img
                     src={seta}
@@ -110,9 +117,15 @@ function Discover() {
                   searchQuery={searchQuery}
                   songs={songs}
                   onClearSearch={clearSearch}
+                  aria-label="Resultados da busca"
                 />
               ) : (
-                <SongsList songs={songs} sortOrder={sortOrder} hideSortButton />
+                <SongsList
+                  songs={songs}
+                  sortOrder={sortOrder}
+                  hideSortButton
+                  aria-label="Lista de músicas"
+                />
               )}
             </>
           )}

@@ -136,6 +136,8 @@ const PlaylistDetails = ({ selectedPlaylist, onClose }) => {
         <button
           onClick={() => onClose(null)}
           className="text-white px-4 py-2 rounded-lg transform transition-all duration-300 hover:scale-105 hover:bg-zinc-600 flex items-center"
+          aria-label="Voltar"
+          title="Voltar"
         >
           <img src={back} alt="Voltar" className="h-8 w-8" />
         </button>
@@ -156,12 +158,16 @@ const PlaylistDetails = ({ selectedPlaylist, onClose }) => {
           <button
             onClick={() => setIsOpen(true)}
             className="py-2 px-3 text-white rounded-lg transform transition-all duration-300 hover:scale-105 hover:bg-zinc-600 flex items-center"
+            aria-label="Editar playlist"
+            title="Editar playlist"
           >
             <img src={edit} alt="Edit" className="h-6 w-6" />
           </button>
           <button
             onClick={handleDelete}
             className="py-2 px-3 text-white rounded-lg transform transition-all duration-300 hover:scale-105 hover:bg-zinc-600 flex items-center"
+            aria-label="Remover playlist"
+            title="Remover playlist"
           >
             <img src={remove} alt="Remove" className="h-6 w-6" />
           </button>
@@ -174,6 +180,7 @@ const PlaylistDetails = ({ selectedPlaylist, onClose }) => {
         placeholder="Buscar músicas..."
         value={searchQuery}
         onSearch={setSearchQuery}
+        aria-label="Barra de busca"
       />
       <div className="grid grid-cols-2 gap-4 my-6">
         <div>
@@ -186,6 +193,7 @@ const PlaylistDetails = ({ selectedPlaylist, onClose }) => {
               isInPlaylistDetails={true}
               onAddToPlaylist={handleAddToPlaylist}
               onDelete={handleRemoveFromPlaylist}
+              aria-label="Lista de músicas"
             />
           )}
         </div>
@@ -199,6 +207,7 @@ const PlaylistDetails = ({ selectedPlaylist, onClose }) => {
               isInPlaylistDetails={false}
               onDelete={handleRemoveFromPlaylist}
               isPlaylistTrack={true}
+              aria-label="Faixas da playlist"
             />
           ) : (
             <p className="text-gray-300 text-lg font-thin ">
@@ -213,6 +222,7 @@ const PlaylistDetails = ({ selectedPlaylist, onClose }) => {
         isEditing={true}
         playlist={selectedPlaylist}
         onSave={handleSave}
+        aria-label="Modal de edição de playlist"
       />
       <ToastContainer
         position="bottom-right"
@@ -225,6 +235,7 @@ const PlaylistDetails = ({ selectedPlaylist, onClose }) => {
         draggable
         pauseOnHover
         theme="dark"
+        aria-live="polite"
       />
     </div>
   );

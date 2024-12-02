@@ -18,6 +18,7 @@ function Sidebar() {
           to="/home"
           className="flex items-center space-x-3 text-xl font-thin text-zinc-100 hover:text-white hover:font-semibold transform transition-transform duration-200 hover:scale-105"
           aria-label="Home"
+          title="Home"
         >
           <img src={home} alt="Home" className="w-6 h-6" />
           <span>Home</span>
@@ -26,6 +27,7 @@ function Sidebar() {
           to="/discover"
           className="flex items-center space-x-3 text-xl font-thin text-zinc-100 hover:text-white hover:font-semibold transform transition-transform duration-200 hover:scale-105"
           aria-label="Discover"
+          title="Discover"
         >
           <img src={search} alt="Descobrir" className="w-6 h-6" />
           <span>Descobrir</span>
@@ -34,6 +36,7 @@ function Sidebar() {
           to="/songs"
           className="flex items-center space-x-3 text-xl font-thin text-zinc-100 hover:text-white hover:font-semibold transform transition-transform duration-200 hover:scale-105"
           aria-label="Songs"
+          title="Songs"
         >
           <img src={musicnote} alt="Músicas" className="w-6 h-6" />
           <span>Músicas</span>
@@ -42,6 +45,7 @@ function Sidebar() {
           to="/playlists"
           className="flex items-center space-x-3 text-xl font-thin text-zinc-100 hover:text-white hover:font-bold transform transition-transform duration-200 hover:scale-105"
           aria-label="Playlists"
+          title="Playlists"
         >
           <img src={library} alt="Playlists" className="w-6 h-6" />
           <span>Playlists</span>

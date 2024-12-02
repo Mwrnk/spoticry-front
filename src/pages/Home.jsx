@@ -25,21 +25,41 @@ function Home() {
   return (
     <div className="grid h-screen grid-rows-[auto_1fr_auto]">
       <Header />
-      <main className="flex overflow-hidden">
+      <main className="flex overflow-hidden" role="main">
         <Sidebar />
         <div className="flex-1 overflow-y-auto p-4 space-y-8 pl-8 pr-8">
-          <h2 className="text-4xl font-bold text-gray-200 mb-4">
+          <h2
+            className="text-4xl font-bold text-gray-200 mb-4"
+            id="discover-music"
+          >
             Descubra novas músicas
           </h2>
-          <Carousel items={songs} type="song" />
-          <h2 className="text-4xl font-bold text-gray-200 mb-4">
+          <Carousel
+            items={songs}
+            type="song"
+            aria-labelledby="discover-music"
+          />
+          <h2
+            className="text-4xl font-bold text-gray-200 mb-4"
+            id="recently-played"
+          >
             Tocadas recentemente
           </h2>
-          <Carousel items={songs} type="song" />
-          <h2 className="text-4xl font-bold text-gray-200 mb-4">
+          <Carousel
+            items={songs}
+            type="song"
+            aria-labelledby="recently-played"
+          />
+          <h2
+            className="text-4xl font-bold text-gray-200 mb-4"
+            id="trending-playlists"
+          >
             Playlists em tendência
           </h2>
-          <PlaylistCarousel playlists={playlists} />
+          <PlaylistCarousel
+            playlists={playlists}
+            aria-labelledby="trending-playlists"
+          />
         </div>
       </main>
     </div>

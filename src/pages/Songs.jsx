@@ -106,10 +106,17 @@ function Songs() {
                     searchQuery={searchQuery}
                     placeholder="Busque suas músicas..."
                     onSearch={handleSearch}
+                    aria-label="Barra de busca"
                   />
                   <button
                     onClick={handleSortOrderChange}
                     className="ml-4 p-2 bg-zinc-800 text-white rounded-xl transform transition-transform duration-300 hover:scale-105 active:scale-95"
+                    aria-label={`Ordenar músicas em ordem ${
+                      sortOrder === "asc" ? "decrescente" : "crescente"
+                    }`}
+                    title={`Ordenar músicas em ordem ${
+                      sortOrder === "asc" ? "decrescente" : "crescente"
+                    }`}
                   >
                     <img
                       src={seta}
@@ -122,8 +129,10 @@ function Songs() {
                   <button
                     className="py-2 px-2 bg-gradient-to-br from-custom-blue to-custom-purple text-white rounded-lg transform transition-transform duration-300 hover:scale-105 active:scale-95"
                     onClick={() => setIsModalOpen(true)}
+                    aria-label="Adicionar nova música"
+                    title="Adicionar nova música"
                   >
-                    <img src={add} alt="add" className="h-8 w-8" />
+                    <img src={add} alt="Adicionar música" className="h-8 w-8" />
                   </button>
                 </div>
               </div>
@@ -137,6 +146,7 @@ function Songs() {
                   onClose={() => setIsModalOpen(false)}
                   onSave={handleAddMusic}
                   className="z-50"
+                  aria-label="Modal de adicionar música"
                 />
               )}
               {searchQuery ? (
@@ -144,6 +154,7 @@ function Songs() {
                   searchQuery={searchQuery}
                   songs={songs}
                   onClearSearch={clearSearch}
+                  aria-label="Resultados da busca"
                 />
               ) : (
                 <>
@@ -155,6 +166,7 @@ function Songs() {
                     isInPlaylistDetails={false}
                     sortOrder={sortOrder}
                     hideSortButton
+                    aria-label="Lista de músicas"
                   />
                   {selectedSong && (
                     <MusicModal
@@ -165,6 +177,7 @@ function Songs() {
                       }
                       music={selectedSong}
                       className="z-50"
+                      aria-label="Modal de editar música"
                     />
                   )}
                 </>
@@ -184,6 +197,7 @@ function Songs() {
         draggable
         pauseOnHover
         theme="dark"
+        aria-live="polite"
       />
     </div>
   );
