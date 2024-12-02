@@ -1,8 +1,8 @@
-import UserPlaylists from "./UsersPlaylist";
-import PlaylistModal from "./PlaylistModal";
-import add from "../../assets/add.svg";
-import SearchBar from "../../components/SearchBar";
-import seta from "../../assets/seta.svg";
+import UserPlaylists from "../UsersPlaylist";
+import PlaylistModal from "../Components/PlaylistModal";
+import add from "../../../assets/add.svg";
+import SearchBar from "../../Common/SearchBar";
+import seta from "../../../assets/seta.svg";
 
 const PlaylistsContainer = ({
   playlists,

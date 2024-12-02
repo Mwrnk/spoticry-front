@@ -1,22 +1,22 @@
 import { useState, useEffect, useContext, useCallback } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { UserContext } from "../../context/userContext";
-import { fetchSongs, getSong } from "../../services/songService";
+import { UserContext } from "../../../context/userContext";
+import { fetchSongs, getSong } from "../../../services/songService";
 import {
   fetchPlaylistTracks,
   addSongToPlaylist,
   deletePlaylist,
   removeSongFromPlaylist,
   fetchUserPlaylists,
-} from "../../services/playlistService";
-import SongsList from "../Song/SongsList";
-import PlaylistModal from "./PlaylistModal";
-import SearchBar from "../SearchBar";
-import LoadingSpinner from "../LoadingSpinner";
-import edit from "../../assets/edit.svg";
-import remove from "../../assets/remove.svg";
-import back from "../../assets/back.svg";
+} from "../../../services/playlistService";
+import SongsList from "../../Song/Pages/SongsList";
+import PlaylistModal from "../Components/PlaylistModal";
+import SearchBar from "../../Common/SearchBar";
+import LoadingSpinner from "../../Common/LoadingSpinner";
+import edit from "../../../assets/edit.svg";
+import remove from "../../../assets/remove.svg";
+import back from "../../../assets/back.svg";
 
 const PlaylistDetails = ({ selectedPlaylist, onClose }) => {
   const [songs, setSongs] = useState([]);

@@ -1,5 +1,4 @@
-// src/components/SearchBar.jsx
-import search from "../assets/search.svg";
+import search from "../../assets/search.svg";
 function SearchBar({ placeholder, onSearch, value }) {
   return (
     <div className="relative flex items-center">

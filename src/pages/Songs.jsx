@@ -12,11 +12,11 @@ import {
 
 import Header from "../components/Layout/Header";
 import Sidebar from "../components/Layout/Sidebar";
-import SearchBar from "../components/SearchBar";
-import SearchResults from "../components/SearchResults";
-import SongsList from "../components/Song/SongsList";
-import MusicModal from "../components/Song/SongModal";
-import LoadingSpinner from "../components/LoadingSpinner";
+import SearchBar from "../components/Common/SearchBar";
+import SearchResults from "../components/Common/SearchResults";
+import SongsList from "../components/Song/Pages/SongsList";
+import MusicModal from "../components/Song/Components/SongModal";
+import LoadingSpinner from "../components/Common/LoadingSpinner";
 
 import add from "../assets/addmusic.svg";
 import seta from "../assets/seta.svg";
@@ -72,10 +72,6 @@ function Songs() {
     setSortOrder(sortOrder === "asc" ? "desc" : "asc");
   };
 
-  useEffect(() => {
-    fetchUserSongs();
-  }, [userId]);
-
   const fetchUserSongs = async () => {
     setLoading(true);
     try {
@@ -88,6 +84,10 @@ function Songs() {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    fetchUserSongs();
+  }, [token]);
 
   return (
     <div className="grid h-screen grid-rows-[auto_1fr_auto]">

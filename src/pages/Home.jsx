@@ -1,7 +1,7 @@
 import Sidebar from "../components/Layout/Sidebar";
 import Header from "../components/Layout/Header";
-import Carousel from "../components/SongCarousel";
-import PlaylistCarousel from "../components/PlaylistCarousel";
+import Carousel from "../components/Song/Components/SongCarousel";
+import PlaylistCarousel from "../components/Playlist/Components/PlaylistCarousel";
 import { useEffect, useState } from "react";
 import { fetchSongs } from "../services/songService";
 import { fetchPlaylists } from "../services/playlistService";

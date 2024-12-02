@@ -1,6 +1,6 @@
 // FILE: services/playlistService.js
 import axios from "axios";
-import { BASE_URL } from "./api";
+import { BASE_URL } from "../api/url";
 
 export const savePlaylist = async (playlist, token, isEditing) => {
   const { userId, name, description, _id } = playlist;

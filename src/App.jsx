@@ -9,7 +9,7 @@ import Home from "./pages/Home";
 import Songs from "./pages/Songs";
 import Discover from "./pages/Discover";
 import Playlists from "./pages/Playlists";
-import ProtectedRoute from "./components/ProtectedRoute";
+import ProtectedRoute from "./components/Common/ProtectedRoute";
 import { UserProvider } from "./context/userContext";
 import LandingPage from "./pages/LandingPage";
 

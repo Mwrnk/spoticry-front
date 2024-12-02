@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
-import { UserContext } from "../../context/userContext";
-import { savePlaylist } from "../../services/playlistService";
+import { UserContext } from "../../../context/userContext";
+import { savePlaylist } from "../../../services/playlistService";
 
 const PlaylistModal = ({
   isOpen,

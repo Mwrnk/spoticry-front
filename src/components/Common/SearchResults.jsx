@@ -1,5 +1,5 @@
 // src/components/SearchResults.jsx
-import SongsList from "./Song/SongsList";
+import SongsList from "../Song/Pages/SongsList";
 
 function SearchResults({ searchQuery, songs, onClearSearch }) {
   // Filtra as músicas com base na consulta de pesquisa

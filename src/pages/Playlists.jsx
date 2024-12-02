@@ -5,9 +5,9 @@ import "react-toastify/dist/ReactToastify.css";
 
 import Header from "../components/Layout/Header";
 import Sidebar from "../components/Layout/Sidebar";
-import PlaylistsContainer from "../components/Playlist/PlaylistsContainer";
-import PlaylistDetails from "../components/Playlist/PlaylistDetails";
-import LoadingSpinner from "../components/LoadingSpinner";
+import PlaylistsContainer from "../components/Playlist/Pages/PlaylistsContainer";
+import PlaylistDetails from "../components/Playlist/Pages/PlaylistDetails";
+import LoadingSpinner from "../components/Common/LoadingSpinner";
 
 import { UserContext } from "../context/userContext";
 import { fetchUserPlaylists } from "../services/playlistService";

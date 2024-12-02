@@ -1,11 +1,11 @@
 import { useState } from "react";
-import SoundPlayer from "../SoundPlayer";
-import play from "../../assets/play_circle.svg";
-import pause from "../../assets/pause_circle.svg";
-import remove from "../../assets/remove.svg";
-import edit from "../../assets/edit.svg";
-import add from "../../assets/add.svg";
-import close from "../../assets/close.svg";
+//import SoundPlayer from "../../Media/SoundPlayer";
+import play from "../../../assets/play_circle.svg";
+import pause from "../../../assets/pause_circle.svg";
+import remove from "../../../assets/remove.svg";
+import edit from "../../../assets/edit.svg";
+import add from "../../../assets/add.svg";
+import close from "../../../assets/close.svg";
 function SongsList({
   songs = [],
   canEdit = false,
@@ -17,6 +17,8 @@ function SongsList({
   sortOrder = "asc",
 }) {
   const [playingUrl, setPlayingUrl] = useState(null);
+
+  //A Funcionalidade de tocar músicas pelo URL foi descontinuada do projeto por conta de loops de requisições causadas pela biblioteca react-player
 
   // Função para alternar entre tocar e pausar a música
   const handlePlayPause = (url) => {
@@ -124,7 +126,7 @@ function SongsList({
                   )}
                 </div>
               </div>
-              <SoundPlayer url={song.url} playing={playingUrl === song.url} />
+              {/* <SoundPlayer url={song.url} playing={playingUrl === song.url} /> */}
             </div>
           );
         })}

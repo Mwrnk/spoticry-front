@@ -1,6 +1,6 @@
 // songService.js
 import axios from "axios";
-import { BASE_URL } from "./api";
+import { BASE_URL } from "../api/url";
 
 export const fetchSongs = async () => {
   try {
