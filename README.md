@@ -11,7 +11,8 @@ Bem-vindo ao **SpotiCry**! Um aplicativo para gerenciamento de playlists e músi
 - **Gerenciar playlists**: criar, editar, excluir playlists e adicionar músicas.
 - **Interagir com músicas de outros usuários**: adicionar músicas de terceiros às suas próprias playlists.
 
-O objetivo é fornecer um ambiente intuitivo e eficiente para amantes de música que desejam organizar suas coleções de forma prática e personalizada.
+O projeto utiliza a API pública **Spoticry** para manipulação dos dados. Para mais informações sobre a API, acesse a documentação:  
+[Documentação da API Spoticry](https://documenter.getpostman.com/view/20306176/2s9YJc23Ap#a5c580c2-a596-48c5-88fb-a205093339c1)
 
 Desenvolvido por **[Mateus Werneck](https://github.com/Mwrnk)**, **[Pedro Marazo](https://github.com/MarazoIED)**, e **[Tiago Malaquias](https://github.com/souzz2)**.
 
